@@ -32,7 +32,7 @@ Install the package in a Laravel Nova project via Composer and run migrations:
 
 ```bash
 # Install nova-media-hub
-composer require outl1ne/nova-media-hub
+composer require cyrano/nova-media-hub-clone
 
 # Run migrations
 php artisan migrate
@@ -47,7 +47,7 @@ public function tools()
 {
     return [
         // ...
-        \Outl1ne\NovaMediaHub\MediaHub::make()
+        \Cyrano\NovaMediaHub\MediaHub::make()
         // You can choose to hide the Tool from the sidebar
           ->hideFromMenu()
 
@@ -69,7 +69,7 @@ This package provides a field `MediaHubField` which allows you to select media. 
 Example usage:
 
 ```php
-use Outl1ne\NovaMediaHub\Nova\Fields\MediaHubField;
+use Cyrano\NovaMediaHubClone\Nova\Fields\MediaHubField;
 
 // ...
 
@@ -83,7 +83,7 @@ MediaHubField::make('Media', 'media')
 The config file can be published using the following command:
 
 ```bash
-php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Cyrano\NovaMediaHubClone\MediaHubServiceProvider" --tag="config"
 ```
 
 ## Localization
@@ -91,7 +91,7 @@ php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvi
 The translation file(s) can be published by using the following command:
 
 ```bash
-php artisan vendor:publish --provider="Outl1ne\NovaMediaHub\MediaHubServiceProvider" --tag="translations"
+php artisan vendor:publish --provider="Cyrano\NovaMediaHubClone\MediaHubServiceProvider" --tag="translations"
 ```
 
 ## Credits

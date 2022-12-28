@@ -1,6 +1,6 @@
 <?php
 
-use Outl1ne\NovaMediaHub\MediaHub;
+use Cyrano\NovaMediaHubClone\MediaHub;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

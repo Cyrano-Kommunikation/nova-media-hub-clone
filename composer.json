@@ -1,5 +1,5 @@
 {
-  "name": "outl1ne/nova-media-hub",
+  "name": "cyrano/nova-media-hub",
   "description": "A Laravel Nova tool for managing media.",
   "keywords": [
     "laravel",
@@ -16,14 +16,14 @@
   },
   "autoload": {
     "psr-4": {
-      "Outl1ne\\NovaMediaHub\\": "src/"
+      "Cyrano\\NovaMediaHubClone\\": "src/"
     },
     "files": []
   },
   "extra": {
     "laravel": {
       "providers": [
-        "Outl1ne\\NovaMediaHub\\MediaHubServiceProvider"
+        "Cyrano\\NovaMediaHubClone\\MediaHubServiceProvider"
       ]
     }
   },

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Outl1ne\NovaMediaHub\Http\Controllers\MediaHubController;
+use Cyrano\NovaMediaHubClone\Http\Controllers\MediaHubController;
 
 /*
 |--------------------------------------------------------------------------

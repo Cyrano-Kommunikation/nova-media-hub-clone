@@ -1,22 +1,22 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\MediaHandler;
+namespace Cyrano\NovaMediaHubClone\MediaHandler;
 
-use Outl1ne\NovaMediaHub\MediaHub;
+use Cyrano\NovaMediaHubClone\MediaHub;
 use Illuminate\Support\Facades\File;
-use Outl1ne\NovaMediaHub\Models\Media;
+use Cyrano\NovaMediaHubClone\Models\Media;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileHelpers;
-use Outl1ne\NovaMediaHub\Jobs\MediaHubOptimizeAndConvertJob;
-use Outl1ne\NovaMediaHub\Exceptions\NoFileProvidedException;
-use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\Base64File;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\RemoteFile;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\Filesystem;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileHelpers;
+use Cyrano\NovaMediaHubClone\Jobs\MediaHubOptimizeAndConvertJob;
+use Cyrano\NovaMediaHubClone\Exceptions\NoFileProvidedException;
+use Cyrano\NovaMediaHubClone\Exceptions\UnknownFileTypeException;
 use Symfony\Component\HttpFoundation\File\File as SymfonyFile;
-use Outl1ne\NovaMediaHub\Exceptions\FileDoesNotExistException;
-use Outl1ne\NovaMediaHub\Exceptions\DiskDoesNotExistException;
-use Outl1ne\NovaMediaHub\Exceptions\FileValidationException;
+use Cyrano\NovaMediaHubClone\Exceptions\FileDoesNotExistException;
+use Cyrano\NovaMediaHubClone\Exceptions\DiskDoesNotExistException;
+use Cyrano\NovaMediaHubClone\Exceptions\FileValidationException;
 
 class FileHandler
 {

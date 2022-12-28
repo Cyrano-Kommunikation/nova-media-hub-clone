@@ -1,14 +1,14 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\Http\Controllers;
+namespace Cyrano\NovaMediaHubClone\Http\Controllers;
 
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
-use Outl1ne\NovaMediaHub\MediaHub;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
+use Cyrano\NovaMediaHubClone\MediaHub;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\Filesystem;
 
 class MediaHubController extends Controller
 {
@@ -32,9 +32,9 @@ class MediaHubController extends Controller
     {
         $media = app(Pipeline::class)
             ->send(MediaHub::getQuery())->through([
-                \Outl1ne\NovaMediaHub\Filters\Collection::class,
-                \Outl1ne\NovaMediaHub\Filters\Search::class,
-                \Outl1ne\NovaMediaHub\Filters\Sort::class,
+                \Cyrano\NovaMediaHubClone\Filters\Collection::class,
+                \Cyrano\NovaMediaHubClone\Filters\Search::class,
+                \Cyrano\NovaMediaHubClone\Filters\Sort::class,
             ])->thenReturn()->paginate(72);
 
 

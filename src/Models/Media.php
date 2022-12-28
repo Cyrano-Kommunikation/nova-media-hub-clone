@@ -1,11 +1,11 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\Models;
+namespace Cyrano\NovaMediaHubClone\Models;
 
-use Outl1ne\NovaMediaHub\MediaHub;
+use Cyrano\NovaMediaHubClone\MediaHub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileNamer;
 
 class Media extends Model
 {

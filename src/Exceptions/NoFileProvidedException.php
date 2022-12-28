@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\Exceptions;
+namespace Cyrano\NovaMediaHubClone\Exceptions;
 
 use Exception;
 

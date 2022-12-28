@@ -1,6 +1,6 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
+namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
 
 class FileNamer
 {

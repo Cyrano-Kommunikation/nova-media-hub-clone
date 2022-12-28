@@ -1,14 +1,14 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub;
+namespace Cyrano\NovaMediaHubClone;
 
 use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Http\Middleware\Authenticate;
-use Outl1ne\NovaMediaHub\Http\Middleware\Authorize;
+use Cyrano\NovaMediaHubClone\Http\Middleware\Authorize;
 use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\Filesystem;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\Filesystem;
 
 class MediaHubServiceProvider extends ServiceProvider
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
+namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
 
 use Spatie\Image\Image;
 use Illuminate\Support\Str;
 use Spatie\Image\Manipulations;
-use Outl1ne\NovaMediaHub\MediaHub;
-use Outl1ne\NovaMediaHub\Models\Media;
+use Cyrano\NovaMediaHubClone\MediaHub;
+use Cyrano\NovaMediaHubClone\Models\Media;
 
 class MediaOptimizer
 {

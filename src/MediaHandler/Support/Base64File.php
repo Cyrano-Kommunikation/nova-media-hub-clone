@@ -1,9 +1,9 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub\MediaHandler\Support;
+namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
 
 use Illuminate\Support\Str;
-use Outl1ne\NovaMediaHub\Exceptions\UnknownFileTypeException;
+use Cyrano\NovaMediaHubClone\Exceptions\UnknownFileTypeException;
 
 class Base64File
 {

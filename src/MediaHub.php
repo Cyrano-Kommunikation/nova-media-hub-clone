@@ -1,18 +1,18 @@
 <?php
 
-namespace Outl1ne\NovaMediaHub;
+namespace Cyrano\NovaMediaHubClone;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
-use Outl1ne\NovaMediaHub\Models\Media;
-use Outl1ne\NovaMediaHub\MediaHandler\FileHandler;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\Base64File;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileNamer;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\FileValidator;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\PathMaker;
-use Outl1ne\NovaMediaHub\MediaHandler\Support\RemoteFile;
+use Cyrano\NovaMediaHubClone\Models\Media;
+use Cyrano\NovaMediaHubClone\MediaHandler\FileHandler;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\Base64File;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileNamer;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileValidator;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\PathMaker;
+use Cyrano\NovaMediaHubClone\MediaHandler\Support\RemoteFile;
 
 class MediaHub extends Tool
 {
