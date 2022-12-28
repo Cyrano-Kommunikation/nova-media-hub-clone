@@ -1,7 +1,7 @@
-# Nova Media Hub
+# Nova Media Hub Clone
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/outl1ne/nova-media-hub.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-media-hub)
-[![Total Downloads](https://img.shields.io/packagist/dt/outl1ne/nova-media-hub.svg?style=flat-square)](https://packagist.org/packages/outl1ne/nova-media-hub)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/cyrano/nova-media-hub-clone.svg?style=flat-square)](https://packagist.org/packages/cyrano/nova-media-hub-clone)
+[![Total Downloads](https://img.shields.io/packagist/dt/cyrano/nova-media-hub-clone.svg?style=flat-square)](https://packagist.org/packages/cyrano/nova-media-hub-clone)
 
 This [Laravel Nova](https://nova.laravel.com) package allows you to manage media and media fields.
 
@@ -9,74 +9,6 @@ This [Laravel Nova](https://nova.laravel.com) package allows you to manage media
 
 - `php: >=8.0`
 - `laravel/nova: ^4.0`
-
-## Features
-
-- Media Hub UI in separate view
-- Media Hub field for selecting single/multiple media
-- Image optimization and multiple conversions support
-- File naming and path making customization
-- Dark mode support
-- A lot configuration options
-  - See [the configuration file](config/nova-media-hub.php).
-
-## Screenshots
-
-![Media Hub](docs/media-hub-dark.jpeg)
-
-![Choose media](docs/choose-media-dark.jpeg)
-
-## Installation
-
-Install the package in a Laravel Nova project via Composer and run migrations:
-
-```bash
-# Install nova-media-hub
-composer require cyrano/nova-media-hub-clone
-
-# Run migrations
-php artisan migrate
-```
-
-Register the tool with Nova in the `tools()` method of the `NovaServiceProvider`:
-
-```php
-// in app/Providers/NovaServiceProvider.php
-
-public function tools()
-{
-    return [
-        // ...
-        \Cyrano\NovaMediaHub\MediaHub::make()
-        // You can choose to hide the Tool from the sidebar
-          ->hideFromMenu()
-
-          // Optionally add additional fields to Media items
-          ->withCustomFields(
-            ['copyright' => __('Copyright')],
-            overwrite: false
-          )
-    ];
-}
-```
-
-## Usage
-
-### Fields
-
-This package provides a field `MediaHubField` which allows you to select media. This saves the media as a JSON array into the database.
-
-Example usage:
-
-```php
-use Cyrano\NovaMediaHubClone\Nova\Fields\MediaHubField;
-
-// ...
-
-MediaHubField::make('Media', 'media')
-  ->defaultCollection('products') // Define the default collection the "Choose media" modal shows
-  ->multiple(), // Define whether multiple media can be selected
-```
 
 ### Configure
 
@@ -96,8 +28,8 @@ php artisan vendor:publish --provider="Cyrano\NovaMediaHubClone\MediaHubServiceP
 
 ## Credits
 
-- [Tarvo Reinpalu](https://github.com/Tarpsvo)
+- [outl1ne](https://github.com/outl1ne)
 
 ## License
 
-Nova Media Hub is open-sourced software licensed under the [MIT license](LICENSE.md).
+Nova Media Hub Clone is open-sourced software licensed under the [MIT license](LICENSE.md).

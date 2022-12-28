@@ -1,5 +1,5 @@
 {
-  "name": "cyrano/nova-media-hub",
+  "name": "cyrano/nova-media-hub-clone",
   "description": "A Laravel Nova tool for managing media.",
   "keywords": [
     "laravel",
