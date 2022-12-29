@@ -20,6 +20,7 @@ export default {
                     return false;
                 } else {
                     Nova.$toasted.error(e.message);
+                    return false;
                 }
             }
         },
@@ -38,6 +39,7 @@ export default {
                         data.errors.forEach(error => Nova.$toasted.error(error));
                     }
                 }
+                return false;
             }
         }
     }
