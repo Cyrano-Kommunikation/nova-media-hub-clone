@@ -102,8 +102,6 @@ import MoveToCollectionModal from '../modals/MoveToCollectionModal';
 import MediaItemContextMenu from '../components/MediaItemContextMenu';
 import MediaOrderSelect from '../components/MediaOrderSelect';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
-import PenIcon from '../icons/PenIcon.vue';
-import TrashIcon from '../icons/TrashIcon.vue';
 
 export default {
   mixins: [HandlesMediaLists, HandlesMediaUpload],
