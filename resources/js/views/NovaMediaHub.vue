@@ -1,5 +1,6 @@
 <template>
   <LoadingView :loading="loading" :key="collectionId" class="o1-flex o1-flex-col o1-m-2">
+
     <Head :title="__('novaMediaHub.navigationItemTitle')" />
 
     <!-- Header -->
@@ -7,24 +8,19 @@
       <IndexSearchInput class="o1-mb-0" v-model:keyword="search" @update:keyword="search = $event" />
 
       <div class="o1-ml-auto o1-flex o1-gap-2">
-        <MediaOrderSelect
-          :columns="orderColumns"
-          v-model:selected="orderBy"
-          @change="selected => (orderBy = selected)"
-        />
+        <MediaOrderSelect :columns="orderColumns" v-model:selected="orderBy"
+          @change="selected => (orderBy = selected)" />
         <LoadingButton @click="showMediaUploadModal = true">{{ __('novaMediaHub.uploadMediaButton') }}</LoadingButton>
       </div>
     </div>
 
     <!-- Content wrapper -->
     <div
-      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700 o1-min-h-[500px]"
-    >
+      class="o1-flex o1-border o1-full o1-border-slate-200 o1-rounded o1-bg-white o1-shadow dark:o1-bg-slate-800 dark:o1-border-slate-700 o1-min-h-[500px]">
       <!-- Collections list -->
       <div class="o1-flex o1-flex-col o1-border-r o1-border-slate-200 dark:o1-border-slate-700 o1-min-w-[160px]">
         <div
-          class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center dark:o1-border-slate-700"
-        >
+          class="o1-font-bold o1-border-b o1-border-slate-200 o1-px-6 o1-py-3 o1-text-center dark:o1-border-slate-700">
           {{ __('novaMediaHub.collectionsTitle') }}
         </div>
 
@@ -33,14 +29,34 @@
             {{ __('novaMediaHub.noCollectionsFoundText') }}
           </div>
 
-          <Link
-            v-for="collectionName in collections"
-            :key="collectionName"
-            :href="`${basePath}/${collectionName}`"
-            class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100 dark:o1-border-slate-600 dark:o1-bg-slate-700 dark:hover:o1-bg-slate-800"
-            :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === collection }"
-          >
-            {{ collectionName }}
+          <Link v-for="collectionName in collections" :key="collectionName" :href="`${basePath}/${collectionName}`"
+            class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100 dark:o1-border-slate-600 dark:o1-bg-slate-700 dark:hover:o1-bg-slate-800 hover:flex hover:items-center hover:justify-between group"
+            :class="{ 'font-bold text-primary-500 o1-bg-slate-100': collectionName === collection }">
+          {{ collectionName }}
+          <div class="group-hover:block hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+              id="Layer_1" viewBox="0 0 369.656 369.656" xml:space="preserve">
+              <g id="XMLID_1437_">
+                <g id="XMLID_1438_">
+                  <path id="XMLID_1439_" style="fill:#1F2C47;"
+                    d="M255.967,195h-20V80.25c0-2.251-1.832-4.083-4.083-4.083h-56.25v-20h56.25    c13.279,0,24.083,10.804,24.083,24.083L255.967,195L255.967,195z" />
+                </g>
+                <g id="XMLID_1440_">
+                  <path id="XMLID_1441_" style="fill:#1F2C47;"
+                    d="M185.861,369.656h-37.345c-19.204,0-34.827-15.624-34.827-34.828V112.334h107    v222.494C220.689,354.032,205.065,369.656,185.861,369.656z M133.689,132.334v202.494c0,8.176,6.651,14.828,14.827,14.828h37.345    c8.176,0,14.828-6.652,14.828-14.828V132.334H133.689z" />
+                </g>
+                <g id="XMLID_1444_">
+                  <path id="XMLID_37_" style="fill:#00969B;"
+                    d="M210.689,122.334h-87V34.828c0-13.712,11.116-24.828,24.828-24.828h37.345    c13.712,0,24.828,11.116,24.828,24.828v87.506H210.689z" />
+                  <path id="XMLID_1445_" style="fill:#1F2C47;"
+                    d="M220.689,132.334h-107V34.828C113.689,15.624,129.313,0,148.517,0h37.345    c19.204,0,34.828,15.624,34.828,34.828v97.506H220.689z M133.689,112.334h67V34.828c0-8.177-6.651-14.828-14.828-14.828h-37.345    c-8.176,0-14.827,6.651-14.827,14.828V112.334z" />
+                </g>
+                <g id="XMLID_1448_">
+                  <rect id="XMLID_1449_" x="157.189" y="124.828" style="fill:#1F2C47;" width="20" height="234.828" />
+                </g>
+              </g>
+            </svg>
+          </div>
           </Link>
         </div>
       </div>
@@ -50,17 +66,11 @@
       </div>
 
       <!-- Media list -->
-      <div
-        v-else
-        class="o1-flex o1-flex-col o1-w-full o1-overflow-hidden o1-relative"
-        @dragenter="toggleShowQuickUpload"
-        @dragleave="toggleShowQuickUpload"
-      >
+      <div v-else class="o1-flex o1-flex-col o1-w-full o1-overflow-hidden o1-relative"
+        @dragenter="toggleShowQuickUpload" @dragleave="toggleShowQuickUpload">
         <!-- Dropzone -->
-        <div
-          v-show="showQuickUpload"
-          class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-slate-900 o1-bg-opacity-90"
-        >
+        <div v-show="showQuickUpload"
+          class="o1-absolute o1-inset-0 o1-mx-auto o1-w-100 z-10 o1-bg-slate-900 o1-bg-opacity-90">
           <div class="o1-dropzone-wrapper o1-py-32 o1-px-8 flex o1-items-center o1-justify-center o1-h-full">
             <DropZone v-if="!quickUploadLoading" :multiple="true" @change="uploadFiles" />
 
@@ -68,31 +78,19 @@
           </div>
         </div>
 
-        <div
-          id="media-items-list"
-          class="o1-w-full o1-grid o1-gap-6 o1-p-4 o1-justify-items-center"
-          :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }"
-        >
+        <div id="media-items-list" class="o1-w-full o1-grid o1-gap-6 o1-p-4 o1-justify-items-center"
+          :class="{ 'o1-flex o1-items-center o1-justify-center': !mediaItems.length }">
           <div v-if="!mediaItems.length" class="o1-text-sm o1-text-slate-400">
             {{ __('novaMediaHub.noMediaItemsFoundText') }}
           </div>
 
-          <MediaItem
-            v-for="mediaItem in mediaItems"
-            :key="mediaItem.id"
-            :mediaItem="mediaItem"
-            :showFileName="true"
+          <MediaItem v-for="mediaItem in mediaItems" :key="mediaItem.id" :mediaItem="mediaItem" :showFileName="true"
             @click.stop.prevent="openViewModal(mediaItem)"
-            @contextmenu.stop.prevent="openContextMenu($event, mediaItem)"
-          />
+            @contextmenu.stop.prevent="openContextMenu($event, mediaItem)" />
         </div>
 
-        <PaginationLinks
-          class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 dark:o1-border-slate-700"
-          :page="mediaResponse.current_page"
-          :pages="mediaResponse.last_page"
-          @page="switchToPage"
-        />
+        <PaginationLinks class="o1-mt-auto o1-w-full o1-border-t o1-border-slate-200 dark:o1-border-slate-700"
+          :page="mediaResponse.current_page" :pages="mediaResponse.last_page" @page="switchToPage" />
       </div>
     </div>
 
@@ -100,22 +98,13 @@
 
     <MediaUploadModal :show="showMediaUploadModal" @close="closeMediaUploadModal" :active-collection="collection" />
 
-    <MediaItemContextMenu
-      id="media-hub-ctx-menu"
-      :showEvent="ctxShowEvent"
-      :options="ctxOptions"
-      @close="ctxShowEvent = void 0"
-      :mediaItem="ctxMediaItem"
-      @optionClick="contextOptionClick"
-    />
+    <MediaItemContextMenu id="media-hub-ctx-menu" :showEvent="ctxShowEvent" :options="ctxOptions"
+      @close="ctxShowEvent = void 0" :mediaItem="ctxMediaItem" @optionClick="contextOptionClick" />
 
     <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
 
-    <MoveToCollectionModal
-      :show="showMoveCollectionModal"
-      :mediaItem="ctxMediaItem"
-      @close="handleMoveCollectionModalClose"
-    />
+    <MoveToCollectionModal :show="showMoveCollectionModal" :mediaItem="ctxMediaItem"
+      @close="handleMoveCollectionModalClose" />
   </LoadingView>
 </template>
 
@@ -279,7 +268,7 @@ export default {
 }
 
 .o1-dropzone-wrapper {
-  > div {
+  >div {
     width: 100%;
   }
 
