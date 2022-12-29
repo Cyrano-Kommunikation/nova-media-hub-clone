@@ -1,6 +1,6 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
+namespace Cyrano\MediaHub\MediaHandler\Support;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;

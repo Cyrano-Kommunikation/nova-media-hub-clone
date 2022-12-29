@@ -1,9 +1,9 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
+namespace Cyrano\MediaHub\MediaHandler\Support;
 
-use Cyrano\NovaMediaHubClone\Models\Media;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\Traits\PathMakerHelpers;
+use Cyrano\MediaHub\Models\Media;
+use Cyrano\MediaHub\MediaHandler\Support\Traits\PathMakerHelpers;
 
 class PathMaker
 {

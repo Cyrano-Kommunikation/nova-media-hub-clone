@@ -1,10 +1,10 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\Nova\Resources;
+namespace Cyrano\MediaHub\Nova\Resources;
 
 use Laravel\Nova\Resource;
 use Illuminate\Http\Request;
-use Cyrano\NovaMediaHubClone\MediaHub;
+use Cyrano\MediaHub\MediaHub;
 
 class Media extends Resource
 {

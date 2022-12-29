@@ -1,6 +1,6 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\Filters;
+namespace Cyrano\MediaHub\Filters;
 
 use Closure;
 

@@ -1,14 +1,18 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\Http\Controllers;
+namespace Cyrano\MediaHub\Http\Controllers;
 
+use BeyondCode\QueryDetector\Outputs\Log;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
-use Cyrano\NovaMediaHubClone\MediaHub;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\Filesystem;
+use Cyrano\MediaHub\MediaHub;
+use Cyrano\MediaHub\MediaHandler\Support\Filesystem;
+use Cyrano\MediaHub\Models\Media;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 
 class MediaHubController extends Controller
 {
@@ -32,9 +36,9 @@ class MediaHubController extends Controller
     {
         $media = app(Pipeline::class)
             ->send(MediaHub::getQuery())->through([
-                \Cyrano\NovaMediaHubClone\Filters\Collection::class,
-                \Cyrano\NovaMediaHubClone\Filters\Search::class,
-                \Cyrano\NovaMediaHubClone\Filters\Sort::class,
+                \Cyrano\MediaHub\Filters\Collection::class,
+                \Cyrano\MediaHub\Filters\Search::class,
+                \Cyrano\MediaHub\Filters\Sort::class,
             ])->thenReturn()->paginate(72);
 
 
@@ -111,6 +115,7 @@ class MediaHubController extends Controller
 
     public function updateMediaData(Request $request, $mediaId)
     {
+        dd($request->all());
         $media = MediaHub::getQuery()->findOrFail($mediaId);
         $locales = MediaHub::getLocales();
         $fieldKeys = array_keys(MediaHub::getDataFields());
@@ -118,7 +123,11 @@ class MediaHubController extends Controller
         // No translations, we hardcoded frontend to always send data as 'en'
         if (empty($locales)) {
             $mediaData = $media->data;
+            dd($fieldKeys);
             foreach ($fieldKeys as $key) {
+                if ($key == 'tags') {
+
+                }
                 $mediaData[$key] = $request->input("{$key}.en") ?? null;
             }
             $media->data = $mediaData;
@@ -133,5 +142,44 @@ class MediaHubController extends Controller
         $media->save();
 
         return response()->json($media, 200);
+    }
+
+    public function rename(Request $request, string $collectionId): JsonResponse
+    {
+        $collectionName = $request->input('newCollectionName');
+        if (!$collectionName) return response()->json(['error' => 'Der neue Kollektionsname wird benötigt.'], 400);
+
+
+        DB::transaction(function () use ($collectionId, $collectionName) {
+            $medias = MediaHub::getQuery()->where('collection_name', $collectionId)->get();
+
+            foreach ($medias as $media) {
+                $media->update([
+                    'collection_name' => $collectionName
+                ]);
+            }
+        });
+
+        return response()->json('', 200);
+    }
+
+    public function deleteCollection(string $collectionId): JsonResponse
+    {
+        if (!$collectionId) return response()->json(['error' => 'Es wurde keine Kollektionsid übergeben.'], 400);
+
+        $medias = MediaHub::getQuery()->where('collection_name', $collectionId)->get();
+        $defaultCollections = MediaHub::getDefaultCollections();
+
+        if (in_array($collectionId, $defaultCollections)) {
+            return response()->json(['errors' => ['Du kannst diese Kollektion nicht löschen, da diese als Standard festgelegt wurde.']], 400);
+        }
+
+        foreach ($medias as $media) {
+            $fileSystem = app()->make(Filesystem::class);
+            $fileSystem->deleteFromMediaLibrary($media);
+            $media->delete();
+        }
+
+        return response()->json('', 200);
     }
 }

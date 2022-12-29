@@ -1,9 +1,9 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
+namespace Cyrano\MediaHub\MediaHandler\Support;
 
 use Illuminate\Support\Str;
-use Cyrano\NovaMediaHubClone\Models\Media;
+use Cyrano\MediaHub\Models\Media;
 
 class DatePathMaker extends PathMaker
 {

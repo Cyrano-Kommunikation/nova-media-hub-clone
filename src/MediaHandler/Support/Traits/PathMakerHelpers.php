@@ -1,11 +1,11 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\MediaHandler\Support\Traits;
+namespace Cyrano\MediaHub\MediaHandler\Support\Traits;
 
 use Illuminate\Support\Facades\Storage;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileHelpers;
-use Cyrano\NovaMediaHubClone\MediaHub;
-use Cyrano\NovaMediaHubClone\Models\Media;
+use Cyrano\MediaHub\MediaHandler\Support\FileHelpers;
+use Cyrano\MediaHub\MediaHub;
+use Cyrano\MediaHub\Models\Media;
 
 trait PathMakerHelpers
 {

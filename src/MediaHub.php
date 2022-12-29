@@ -1,18 +1,18 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone;
+namespace Cyrano\MediaHub;
 
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuSection;
-use Cyrano\NovaMediaHubClone\Models\Media;
-use Cyrano\NovaMediaHubClone\MediaHandler\FileHandler;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\Base64File;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileNamer;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileValidator;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\PathMaker;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\RemoteFile;
+use Cyrano\MediaHub\MediaHandler\FileHandler;
+use Cyrano\MediaHub\MediaHandler\Support\Base64File;
+use Cyrano\MediaHub\MediaHandler\Support\FileNamer;
+use Cyrano\MediaHub\MediaHandler\Support\FileValidator;
+use Cyrano\MediaHub\MediaHandler\Support\PathMaker;
+use Cyrano\MediaHub\MediaHandler\Support\RemoteFile;
+use Cyrano\MediaHub\Models\Media;
 
 class MediaHub extends Tool
 {
@@ -24,15 +24,21 @@ class MediaHub extends Tool
         parent::__construct();
 
         $this->withCustomFields([
-            'alt' => __('novaMediaHub.altTextTitle'),
-            'title' => __('novaMediaHub.titleTextTitle'),
+            'alt' => [
+                'type' => 'text',
+                'label' => 'Alt Text'
+            ],
+            'title' => [
+                'type' => 'text',
+                'label' => 'Titel'
+            ]
         ]);
     }
 
     public function boot()
     {
-        Nova::script('nova-media-hub', __DIR__ . '/../dist/js/entry.js');
-        Nova::style('nova-media-hub', __DIR__ . '/../dist/css/entry.css');
+        Nova::script('media-hub', __DIR__ . '/../dist/js/entry.js');
+        Nova::style('media-hub', __DIR__ . '/../dist/css/entry.css');
 
         Nova::provideToScript([
             'novaMediaHub' => [
@@ -81,7 +87,7 @@ class MediaHub extends Tool
         return $mediaHubTool?->customFields ?? [];
     }
 
-    public static function getSelfTool(): MediaHub|null
+    public static function getSelfTool()
     {
         return collect(Nova::registeredTools())->first(fn ($tool) => $tool instanceof MediaHub);
     }

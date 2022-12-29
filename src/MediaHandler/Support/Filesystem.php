@@ -1,10 +1,10 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
+namespace Cyrano\MediaHub\MediaHandler\Support;
 
 use Illuminate\Contracts\Filesystem\Factory;
-use Cyrano\NovaMediaHubClone\MediaHub;
-use Cyrano\NovaMediaHubClone\Models\Media;
+use Cyrano\MediaHub\MediaHub;
+use Cyrano\MediaHub\Models\Media;
 
 class Filesystem
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\MediaHandler\Support;
+namespace Cyrano\MediaHub\MediaHandler\Support;
 
-use Cyrano\NovaMediaHubClone\MediaHub;
-use Cyrano\NovaMediaHubClone\Exceptions\FileTooLargeException;
-use Cyrano\NovaMediaHubClone\Exceptions\MimeTypeNotAllowedException;
+use Cyrano\MediaHub\MediaHub;
+use Cyrano\MediaHub\Exceptions\FileTooLargeException;
+use Cyrano\MediaHub\Exceptions\MimeTypeNotAllowedException;
 
 class FileValidator
 {

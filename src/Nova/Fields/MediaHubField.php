@@ -1,11 +1,11 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\Nova\Fields;
+namespace Cyrano\MediaHub\Nova\Fields;
 
 use Exception;
 use Illuminate\Support\Arr;
 use Laravel\Nova\Fields\Field;
-use Cyrano\NovaMediaHubClone\MediaHub;
+use Cyrano\MediaHub\MediaHub;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class MediaHubField extends Field

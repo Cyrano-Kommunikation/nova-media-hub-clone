@@ -1,9 +1,10 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\Http\Middleware;
+namespace Cyrano\MediaHub\Http\Middleware;
 
 use Laravel\Nova\Nova;
-use Cyrano\NovaMediaHubClone\MediaHub;
+use Cyrano\MediaHub\MediaHub;
+use Illuminate\Support\Facades\Log;
 
 class Authorize
 {

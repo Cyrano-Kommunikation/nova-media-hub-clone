@@ -1,17 +1,17 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\Jobs;
+namespace Cyrano\MediaHub\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Cyrano\NovaMediaHubClone\MediaHub;
+use Cyrano\MediaHub\MediaHub;
 use Illuminate\Queue\SerializesModels;
-use Cyrano\NovaMediaHubClone\Models\Media;
+use Cyrano\MediaHub\Models\Media;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\Filesystem;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileHelpers;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\MediaOptimizer;
+use Cyrano\MediaHub\MediaHandler\Support\Filesystem;
+use Cyrano\MediaHub\MediaHandler\Support\FileHelpers;
+use Cyrano\MediaHub\MediaHandler\Support\MediaOptimizer;
 
 class MediaHubOptimizeAndConvertJob implements ShouldQueue
 {

@@ -1,14 +1,18 @@
 <?php
 
-namespace Cyrano\NovaMediaHubClone\Models;
+namespace Cyrano\MediaHub\Models;
 
-use Cyrano\NovaMediaHubClone\MediaHub;
+use Cyrano\MediaHub\MediaHub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use Cyrano\NovaMediaHubClone\MediaHandler\Support\FileNamer;
+use Cyrano\MediaHub\MediaHandler\Support\FileNamer;
 
 class Media extends Model
 {
+    protected $fillable = [
+        'collection_name'
+    ];
+
     protected $casts = [
         'data' => 'array',
         'conversions' => 'array',
