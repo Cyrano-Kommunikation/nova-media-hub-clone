@@ -24,14 +24,8 @@ class MediaHub extends Tool
         parent::__construct();
 
         $this->withCustomFields([
-            'alt' => [
-                'type' => 'text',
-                'label' => 'Alt Text'
-            ],
-            'title' => [
-                'type' => 'text',
-                'label' => 'Titel'
-            ]
+            'alt' => 'Alt Text',
+            'title' => 'Titel'
         ]);
     }
 

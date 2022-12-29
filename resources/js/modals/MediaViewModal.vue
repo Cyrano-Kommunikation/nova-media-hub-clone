@@ -103,7 +103,6 @@ export default {
       this.loading = true;
       try {
         const formData = new FormData();
-        console.log(this.dataFields);
         for (const field of this.dataFields) {
           field.fill(formData);
         }
@@ -139,8 +138,7 @@ export default {
       }
 
       return {
-        name: name.label,
-        type: name.type,
+        name,
         attribute,
         visible: true,
         stacked: true,
