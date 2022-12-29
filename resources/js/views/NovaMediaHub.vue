@@ -117,8 +117,6 @@ export default {
     MediaItemContextMenu,
     MoveToCollectionModal,
     MediaOrderSelect,
-    PenIcon,
-    TrashIcon,
   },
 
   data: () => ({
