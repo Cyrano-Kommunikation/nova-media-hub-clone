@@ -76,7 +76,6 @@ export default {
     selectedCollection: void 0,
     collections: [],
     dataFields: [],
-    options: []
   }),
 
   mounted() {
