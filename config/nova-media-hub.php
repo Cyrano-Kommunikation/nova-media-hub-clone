@@ -10,15 +10,15 @@ return [
     'base_path' => 'media-hub',
 
     // Classes configuration
-    'model' => \Cyrano\NovaMediaHubClone\Models\Media::class,
-    'file_namer' => \Cyrano\NovaMediaHubClone\MediaHandler\Support\FileNamer::class,
-    'file_validator' => \Cyrano\NovaMediaHubClone\MediaHandler\Support\FileValidator::class,
+    'model' => \Cyrano\MediaHub\Models\Media::class,
+    'file_namer' => \Cyrano\MediaHub\MediaHandler\Support\FileNamer::class,
+    'file_validator' => \Cyrano\MediaHub\MediaHandler\Support\FileValidator::class,
 
     // This default PathMaker puts files in a /prefix/<mediaid>/* structure
-    'path_maker' => \Cyrano\NovaMediaHubClone\MediaHandler\Support\PathMaker::class,
+    'path_maker' => \Cyrano\MediaHub\MediaHandler\Support\PathMaker::class,
 
     // If you want files to be in a /prefix/year/month/<mediaid>/* folder structure, use DatePathMaker instead
-    // 'path_maker' => \Cyrano\NovaMediaHubClone\MediaHandler\Support\DatePathMaker::class,
+    // 'path_maker' => \Cyrano\MediaHub\MediaHandler\Support\DatePathMaker::class,
 
     // Disk configurations
     'disk_name' => 'public',
