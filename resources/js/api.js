@@ -24,4 +24,12 @@ export default {
   async updateMediaData(mediaId, formData) {
     return Nova.request().post(`${PREFIX}/media/${mediaId}/data`, formData);
   },
+
+  async renameCollection(oldCollectionName, newCollectionName) {
+    return Nova.request().post(`${PREFIX}/collection/${oldCollectionName}/rename`, { newCollectionName });
+  },
+  
+  async deleteCollection(collectionId) {
+    return Nova.request().delete(`${PREFIX}/collection/${collectionId}/delete`);
+  }
 };
