@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Cyrano\NovaMediaHubClone\Http\Controllers\MediaHubController;
+use Cyrano\MediaHub\Http\Controllers\MediaHubController;
+use Cyrano\MediaHub\Models\Media;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,7 @@ Route::prefix('/nova-vendor/media-hub')->group(function () {
     Route::post('/media/{mediaId}/move', [MediaHubController::class, 'moveMediaToCollection']);
     Route::post('/media/save', [MediaHubController::class, 'uploadMediaToCollection']);
     Route::delete('media/{mediaId}', [MediaHubController::class, 'deleteMedia']);
+
+    Route::post('collection/{collection}/rename', [MediaHubController::class, 'rename']);
+    Route::delete('collection/{collection}/delete', [MediaHubController::class, 'deleteCollection']);
 });
