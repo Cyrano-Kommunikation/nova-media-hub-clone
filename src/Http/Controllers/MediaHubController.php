@@ -123,9 +123,6 @@ class MediaHubController extends Controller
         if (empty($locales)) {
             $mediaData = $media->data;
             foreach ($fieldKeys as $key) {
-                if ($key == 'tags') {
-
-                }
                 $mediaData[$key] = $request->input("{$key}.en") ?? null;
             }
             $media->data = $mediaData;
