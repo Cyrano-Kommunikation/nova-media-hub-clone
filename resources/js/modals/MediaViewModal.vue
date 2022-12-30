@@ -17,8 +17,6 @@
 
               <div class="o1-flex o1-flex-col mt-1" v-if="show">
                 <component :is="dataField.component" :field="dataField" v-for="(dataField, i) in dataFields" :key="mediaItem.id + i" />
-<!--                <form-translatable-field v-for="(dataField, i) in dataFields" :key="mediaItem.id + i"-->
-<!--                  class="nova-media-hub-media-modal-translatable-field" :field="dataField" />-->
               </div>
               <div>
               </div>
