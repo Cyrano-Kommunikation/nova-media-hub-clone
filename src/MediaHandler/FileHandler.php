@@ -97,7 +97,7 @@ class FileHandler
 
     public function withCollection(string $collectionName)
     {
-        $this->collectionName = $collectionName;
+        $this->collection_name = $collectionName;
         return $this;
     }
 
@@ -151,7 +151,7 @@ class FileHandler
         $media = new $mediaClass($this->modelData ?? []);
 
         $media->file_name = $this->fileName;
-        $media->collection_name = $this->collectionName;
+        $media->collection_id = $this->collection_id;
         $media->size = $fileSize;
         $media->mime_type = $mimeType;
         $media->original_file_hash = $fileHash;

@@ -11,28 +11,24 @@
         <ModalHeader class="flex items-center">{{ __('novaMediaHub.uploadMediaTitle') }}</ModalHeader>
 
         <ModalContent class="px-8 o1-flex o1-flex-col">
-          <!-- Select existing collection -->
-          <span>{{ __('novaMediaHub.uploadModalSelectCollectionTitle') }}</span>
-          <SelectControl v-model:selected="selectedCollection" @change="c => (selectedCollection = c)">
-            <option value="media-hub-new-collection" v-if="canCreateCollections">
-              {{ __('novaMediaHub.uploadModalCreateNewOption') }}
-            </option>
-            <option v-for="c in collections" :key="c" :value="c">{{ c }}</option>
-          </SelectControl>
-
-          <template v-if="newCollection">
-            <span class="mt-6">{{ __('novaMediaHub.enterNewCollectionName') }}</span>
-            <input
-              type="text"
-              name="collection_name"
-              placeholder="Collection name"
-              v-model="collectionName"
-              class="form-control form-input form-input-bordered"
-            />
-          </template>
-
+          <LoadingButton class="mt-2" type="button" @click="handleFileSelect">
+            Dateien auswählen
+          </LoadingButton>
+          <div class="mt-3" v-if="selectedFiles.length > 0">
+            Ausgewählte Dateien:
+          </div>
+          <div class="flex flex-col">
+            <div class="py-3 flex items-center" v-for="(file, index) in selectedFiles">
+              <HeroiconsSolidXCircle
+                class="mr-2 cursor-pointer hover:text-cyan-900 dark:hover:text-cyan-900 transition-all"
+                @click.prevent="removeFile(index)"/>
+              {{ file.name }}
+            </div>
+          </div>
           <input
-            class="form-control form-input form-input-bordered mt-6"
+            id="fileSelect"
+            class="form-control form-input form-input-bordered mt-2 hidden"
+            style="padding-top: 4px;"
             type="file"
             name="selected_media"
             ref="filesInput"
@@ -58,8 +54,11 @@
 <script>
 import API from '../api';
 import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
+import HeroiconsSolidXCircle
+  from "../../../vendor/laravel/nova/resources/js/components/Heroicons/solid/HeroiconsSolidXCircle.vue";
 
 export default {
+  components: {HeroiconsSolidXCircle},
   mixins: [HandlesMediaUpload],
   emits: ['close'],
   props: ['show', 'activeCollection'],
@@ -68,37 +67,36 @@ export default {
     loading: false,
     collectionName: '',
     selectedFiles: '',
-    selectedCollection: void 0,
+    selectedCollection: null,
     collections: [],
   }),
 
   mounted() {
+    this.selectedCollection = this.activeCollection;
     Nova.$emit('close-dropdowns');
   },
 
-  watch: {
-    async show(newValue) {
-      if (newValue) {
-        await this.getCollections();
-        this.selectedCollection = this.activeCollection;
-      }
-    },
-  },
-
   methods: {
+    removeFile(fileIndex) {
+      this.selectedFiles.splice(fileIndex, 1);
+      this.$refs.filesInput.value.splice(fileIndex, 1);
+    },
+    handleFileSelect() {
+      const el = document.getElementById('fileSelect');
+      el.click();
+    },
     async uploadFiles() {
       this.loading = true;
 
-      const { success, media, hadExisting } = await this.uploadFilesToCollection(
+      const {success, media, hadExisting} = await this.uploadFilesToCollection(
         this.selectedFiles,
-        this.finalCollectionName
-      );
+        this.activeCollection);
 
-      let goToCollection = this.finalCollectionName;
+      let goToCollection = this.selectedCollection;
 
       if (hadExisting) {
         // Find possible new collection name
-        const diffCollNameMedia = media.find(mi => mi.collection_name !== this.finalCollectionName);
+        const diffCollNameMedia = media.find(mi => mi.collection_name !== this.selectedCollection);
         if (diffCollNameMedia) goToCollection = diffCollNameMedia.collection_name;
       }
 
@@ -111,12 +109,12 @@ export default {
 
     onFilesChange(e) {
       if (this.$refs.filesInput) {
-        this.selectedFiles = Array.from(this.$refs.filesInput.files);
+        this.selectedFiles = Array.from(this.$refs.filesInput.files).concat(this.selectedFiles);
       }
     },
 
     async getCollections() {
-      const { data } = await API.getCollections();
+      const {data} = await API.getCollections();
       this.collections = data || [];
 
       if (!this.selectedCollection) {

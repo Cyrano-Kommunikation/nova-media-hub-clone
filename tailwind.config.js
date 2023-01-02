@@ -18,4 +18,23 @@ module.exports = {
     'o1-w-40',
     'o1-w-48',
   ],
+  theme: {
+    extend: {
+      'hav-red': {
+        primary: '#e10019',
+        light: 'rgba(225, 0, 25, 0.1)',
+      },
+      'hav-blue': {
+        primary: '#2d4673',
+        'primary-medium': 'rgba(45, 70, 115, 0.3)',
+        'primary-light': 'rgba(45, 70, 115, 0.05)',
+        secondary: '#0096c8',
+      },
+      'hav-gray': {
+        light: '#c8c8c8',
+        medium: '#787878',
+        dark: '#505050'
+      },
+    }
+  }
 };

@@ -162,9 +162,19 @@ class MediaHub extends Tool
         return config('nova-media-hub.table_name');
     }
 
-    public static function getMediaModel()
+    public static function getCollectionTableName(): string
+    {
+        return config('nova-media-hub.collection_table_name');
+    }
+
+    public static function getMediaModel(): string
     {
         return config('nova-media-hub.model');
+    }
+
+    public static function getCollectionModel(): string
+    {
+        return config('nova-media-hub.collection_model');
     }
 
     public static function getQuery()

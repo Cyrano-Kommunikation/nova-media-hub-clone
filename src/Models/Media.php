@@ -4,15 +4,12 @@ namespace Cyrano\MediaHub\Models;
 
 use Cyrano\MediaHub\MediaHub;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 use Cyrano\MediaHub\MediaHandler\Support\FileNamer;
 
 class Media extends Model
 {
-    protected $fillable = [
-        'collection_name'
-    ];
-
     protected $casts = [
         'data' => 'array',
         'conversions' => 'array',
@@ -59,16 +56,25 @@ class Media extends Model
 
     public function formatForNova()
     {
+        $data = null;
+        if (str_contains($this->mime_type, 'image')) {
+            $data = file_get_contents(storage_path("app/media/$this->id/$this->file_name"));
+        }
         return [
             'id' => $this->id,
-            'collection_name' => $this->collection_name,
-            'url' => $this->url,
-            'thumbnail_url' => $this->thumbnailUrl,
+            'collection_id' => $this->collection_id,
+            'url' => $data ? 'data:' . $this->mime_type . ';base64,' . base64_encode($data) : $this->url,
+            'thumbnail_url' => $data ? 'data:' . $this->mime_type . ';base64,' . base64_encode($data) : $this->thumbnailUrl,
             'mime_type' => $this->mime_type,
             'size' => $this->size,
             'file_name' => $this->file_name,
             'data' => $this->data,
             'conversions' => $this->conversions,
         ];
+    }
+
+    public function collection(): BelongsTo
+    {
+        return $this->belongsTo(Collection::class);
     }
 }

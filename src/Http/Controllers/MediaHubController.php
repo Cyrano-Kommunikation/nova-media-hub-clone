@@ -3,6 +3,7 @@
 namespace Cyrano\MediaHub\Http\Controllers;
 
 use BeyondCode\QueryDetector\Outputs\Log;
+use Cyrano\MediaHub\Models\Collection;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -18,16 +19,7 @@ class MediaHubController extends Controller
 {
     public function getCollections(Request $request)
     {
-        $defaultCollections = MediaHub::getDefaultCollections();
-
-        $collections = MediaHub::getMediaModel()::select('collection_name')
-            ->groupBy('collection_name')
-            ->get()
-            ->pluck('collection_name')
-            ->merge($defaultCollections)
-            ->unique()
-            ->values()
-            ->toArray();
+        $collections = MediaHub::getCollectionModel()::with('medias')->get()->toArray();
 
         return response()->json($collections, 200);
     }
@@ -41,7 +33,6 @@ class MediaHubController extends Controller
                 \Cyrano\MediaHub\Filters\Sort::class,
             ])->thenReturn()->paginate(72);
 
-
         $newCollection = $media->getCollection()->map->formatForNova();
         $media->setCollection($newCollection);
 
@@ -51,7 +42,7 @@ class MediaHubController extends Controller
     public function uploadMediaToCollection(Request $request)
     {
         $files = $request->allFiles()['files'] ?? [];
-        $collectionName = $request->get('collectionName') ?? 'default';
+        $collectionName = $request->get('collectionName') ?? 1;
 
         $exceptions = [];
 
@@ -71,7 +62,7 @@ class MediaHubController extends Controller
         $uploadedMedia = collect($uploadedMedia);
         $coreResponse = [
             'media' => $uploadedMedia->map->formatForNova(),
-            'hadExisting' => $uploadedMedia->where(fn ($m) => $m->wasExisting)->count() > 0,
+            'hadExisting' => $uploadedMedia->where(fn($m) => $m->wasExisting)->count() > 0,
             'success_count' => count($files) - count($exceptions),
         ];
 
@@ -116,23 +107,13 @@ class MediaHubController extends Controller
     public function updateMediaData(Request $request, $mediaId)
     {
         $media = MediaHub::getQuery()->findOrFail($mediaId);
-        $locales = MediaHub::getLocales();
-        $fieldKeys = array_keys(MediaHub::getDataFields());
-
-        // No translations, we hardcoded frontend to always send data as 'en'
-        if (empty($locales)) {
-            $mediaData = $media->data;
-            foreach ($fieldKeys as $key) {
-                $mediaData[$key] = $request->input("{$key}.en") ?? null;
-            }
-            $media->data = $mediaData;
-        } else {
-            $mediaData = $media->data;
-            foreach ($fieldKeys as $key) {
-                $mediaData[$key] = $request->input($key) ?? null;
-            }
-            $media->data = $mediaData;
+        $fields = $request->all();
+        $data = [];
+        foreach ($fields as $key => $field) {
+            $data[$key] = $field;
         }
+
+        $media->data = $data;
 
         $media->save();
 
@@ -144,16 +125,10 @@ class MediaHubController extends Controller
         $collectionName = $request->input('newCollectionName');
         if (!$collectionName) return response()->json(['error' => 'Der neue Kollektionsname wird benötigt.'], 400);
 
+        $collection = MediaHub::getCollectionModel()::findOrFail($collectionId);
 
-        DB::transaction(function () use ($collectionId, $collectionName) {
-            $medias = MediaHub::getQuery()->where('collection_name', $collectionId)->get();
-
-            foreach ($medias as $media) {
-                $media->update([
-                    'collection_name' => $collectionName
-                ]);
-            }
-        });
+        $collection->name = $collectionName;
+        $collection->save();
 
         return response()->json('', 200);
     }
@@ -162,18 +137,34 @@ class MediaHubController extends Controller
     {
         if (!$collectionId) return response()->json(['error' => 'Es wurde keine Kollektionsid übergeben.'], 400);
 
-        $medias = MediaHub::getQuery()->where('collection_name', $collectionId)->get();
+        $collection = MediaHub::getCollectionModel()::findOrFail($collectionId);
+
+        $medias = MediaHub::getQuery()->where('collection_id', $collectionId)->get();
         $defaultCollections = MediaHub::getDefaultCollections();
 
-        if (in_array($collectionId, $defaultCollections)) {
+        if (in_array($collection->name, $defaultCollections)) {
             return response()->json(['errors' => ['Du kannst diese Kollektion nicht löschen, da diese als Standard festgelegt wurde.']], 400);
         }
+
+        $collection->delete();
 
         foreach ($medias as $media) {
             $fileSystem = app()->make(Filesystem::class);
             $fileSystem->deleteFromMediaLibrary($media);
             $media->delete();
         }
+
+        return response()->json('', 200);
+    }
+
+    public function storeCollection(Request $request): JsonResponse
+    {
+        if (!$request->input('collectionName')) return response()->json(['error' => 'Bitte gebe einen Kollektionsnamen an.'], 400);
+
+        MediaHub::getCollectionModel()::create([
+            'name' => $request->input('collectionName'),
+            'default' => false
+        ]);
 
         return response()->json('', 200);
     }

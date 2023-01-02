@@ -28,8 +28,12 @@ export default {
   async renameCollection(oldCollectionName, newCollectionName) {
     return Nova.request().post(`${PREFIX}/collection/${oldCollectionName}/rename`, { newCollectionName });
   },
-  
+
   async deleteCollection(collectionId) {
     return Nova.request().delete(`${PREFIX}/collection/${collectionId}/delete`);
+  },
+
+  async createCollection(collectionName) {
+    return Nova.request().post(`${PREFIX}/collection/store`, { collectionName });
   }
 };

@@ -6,11 +6,16 @@ return [
     // Table name
     'table_name' => 'media_hub',
 
+    'collection_table_name' => 'media_hub_collections',
+
     // Base URL path in Nova
     'base_path' => 'media-hub',
 
     // Classes configuration
     'model' => \Cyrano\MediaHub\Models\Media::class,
+
+    'collection_model' => \Cyrano\MediaHub\Models\Collection::class,
+
     'file_namer' => \Cyrano\MediaHub\MediaHandler\Support\FileNamer::class,
     'file_validator' => \Cyrano\MediaHub\MediaHandler\Support\FileValidator::class,
 

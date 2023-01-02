@@ -63,6 +63,7 @@ export default {
   created() {
     this.ctxOptions = [
       { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
+      { name: 'Bearbeiten', action: 'edit' },
       { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
     ];
   },

@@ -12,6 +12,6 @@ class Collection
             return $next($query);
         }
 
-        return $next($query)->where('collection_name', request()->get('collection'));
+        return $next($query)->where('collection_id', request()->get('collection'));
     }
 }

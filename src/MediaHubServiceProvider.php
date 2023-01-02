@@ -2,6 +2,8 @@
 
 namespace Cyrano\MediaHub;
 
+use Cyrano\MediaHub\Http\Controllers\FilesController;
+use Cyrano\MediaHub\Http\Middleware\CheckAccessRightsToFile;
 use Laravel\Nova\Nova;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -56,7 +58,7 @@ class MediaHubServiceProvider extends ServiceProvider
             $path = MediaHub::getBasePath();
 
             $router
-                ->get("/{$path}/{collectionId?}", fn ($collectionId = 'default') => inertia('NovaMediaHub', [
+                ->get("/{$path}/{collectionId?}", fn($collectionId = 1) => inertia('NovaMediaHub', [
                     'collectionId' => $collectionId,
                 ]))
                 ->middleware(['nova', Authenticate::class]);
@@ -65,6 +67,7 @@ class MediaHubServiceProvider extends ServiceProvider
         if ($this->app->routesAreCached()) return;
 
         Route::middleware(['nova', Authorize::class])
-            ->group(__DIR__ . '/../routes/api.php');
+            ->group(__DIR__ . '/../routes/api.php')
+            ->group(__DIR__ . '/../routes/inertia.php');
     }
 }
