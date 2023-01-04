@@ -8,6 +8,10 @@ return [
 
     'collection_table_name' => 'media_hub_collections',
 
+    'tag_table_name' => 'tags',
+
+    'taggable_table_name' => 'taggables',
+
     // Base URL path in Nova
     'base_path' => 'media-hub',
 
@@ -24,6 +28,10 @@ return [
 
     // If you want files to be in a /prefix/year/month/<mediaid>/* folder structure, use DatePathMaker instead
     // 'path_maker' => \Cyrano\MediaHub\MediaHandler\Support\DatePathMaker::class,
+
+    'role_model' => \Cyrano\MediaHub\Models\Role::class,
+
+    'tag_model' => \Cyrano\MediaHub\Models\Tag::class,
 
     // Disk configurations
     'disk_name' => 'public',
