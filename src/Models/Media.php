@@ -5,8 +5,8 @@ namespace Cyrano\MediaHub\Models;
 use Cyrano\MediaHub\MediaHub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Storage;
-use Cyrano\MediaHub\MediaHandler\Support\FileNamer;
 
 class Media extends Model
 {
@@ -70,11 +70,23 @@ class Media extends Model
             'file_name' => $this->file_name,
             'data' => $this->data,
             'conversions' => $this->conversions,
+            'tags' => $this->tags()->get(),
+            'roles' => $this->roles()->get()
         ];
     }
 
     public function collection(): BelongsTo
     {
         return $this->belongsTo(Collection::class);
+    }
+
+    public function tags(): MorphToMany
+    {
+        return $this->morphToMany(MediaHub::getTagModel(), 'taggable');
+    }
+
+    public function roles(): MorphToMany
+    {
+        return $this->morphToMany(MediaHub::getRoleModel(), 'roleable');
     }
 }
