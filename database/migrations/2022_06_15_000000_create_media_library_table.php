@@ -57,7 +57,7 @@ return new class extends Migration {
         });
 
         Schema::create(MediaHub::getTaggableTableName(), function (Blueprint $table) {
-            $table->bigIncrements('tag_id')->primary();
+            $table->bigIncrements('tag_id');
             $table->integer('taggable_id');
             $table->string('taggable_type');
 
