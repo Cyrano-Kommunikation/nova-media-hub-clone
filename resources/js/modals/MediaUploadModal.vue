@@ -66,7 +66,7 @@ export default {
   data: () => ({
     loading: false,
     collectionName: '',
-    selectedFiles: '',
+    selectedFiles: [],
     selectedCollection: null,
     collections: [],
   }),
@@ -79,7 +79,6 @@ export default {
   methods: {
     removeFile(fileIndex) {
       this.selectedFiles.splice(fileIndex, 1);
-      this.$refs.filesInput.value.splice(fileIndex, 1);
     },
     handleFileSelect() {
       const el = document.getElementById('fileSelect');
@@ -109,7 +108,7 @@ export default {
 
     onFilesChange(e) {
       if (this.$refs.filesInput) {
-        this.selectedFiles = Array.from(this.$refs.filesInput.files).concat(this.selectedFiles);
+        this.selectedFiles = [...this.$refs.filesInput.files, ...this.selectedFiles];
       }
     },
 
