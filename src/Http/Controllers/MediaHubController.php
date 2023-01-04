@@ -4,6 +4,7 @@ namespace Cyrano\MediaHub\Http\Controllers;
 
 use BeyondCode\QueryDetector\Outputs\Log;
 use Cyrano\MediaHub\Models\Collection;
+use Cyrano\MediaHub\Models\Role;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -19,9 +20,23 @@ class MediaHubController extends Controller
 {
     public function getCollections(Request $request)
     {
-        $collections = MediaHub::getCollectionModel()::with('medias')->get()->toArray();
+        $collections = MediaHub::getCollectionModel()::with('medias.tags')->get()->toArray();
 
         return response()->json($collections, 200);
+    }
+
+    public function getRoles()
+    {
+        $roles = MediaHub::getRoleModel()::all();
+
+        return response()->json($roles, 200);
+    }
+
+    public function getTags()
+    {
+        $tags = MediaHub::getTagModel()::all();
+
+        return response()->json($tags, 200);
     }
 
     public function getMedia()
@@ -104,12 +119,46 @@ class MediaHubController extends Controller
         return response()->json($media, 200);
     }
 
-    public function updateMediaData(Request $request, $mediaId)
+    /**
+     * Update media data column according to fields on view.
+     * @param Request $request
+     * @param $mediaId
+     * @return JsonResponse
+     */
+    public function updateMediaData(Request $request, $mediaId): JsonResponse
     {
         $media = MediaHub::getQuery()->findOrFail($mediaId);
         $fields = $request->all();
         $data = [];
         foreach ($fields as $key => $field) {
+            if ($key == 'tags') {
+                $arr = [];
+                foreach ($field as $tag) {
+                    $foundTag = MediaHub::getTagModel()::updateOrCreate([
+                        'name' => $tag,
+                        'description' => ''
+                    ]);
+                    $arr[] = $foundTag->id;
+                }
+
+                $media->tags()->sync($arr);
+                continue;
+            }
+
+            if ($key == 'roles') {
+                $roleNotFound = false;
+                foreach ($field as $role) {
+                    $role = Role::find($role);
+                    if (!$role) {
+                        $roleNotFound = true;
+                    }
+                }
+                if ($roleNotFound) {
+                    continue;
+                }
+                $media->roles()->sync($field);
+            }
+
             $data[$key] = $field;
         }
 
@@ -120,6 +169,12 @@ class MediaHubController extends Controller
         return response()->json($media, 200);
     }
 
+    /**
+     * Rename collection with its new name.
+     * @param Request $request
+     * @param string $collectionId
+     * @return JsonResponse
+     */
     public function rename(Request $request, string $collectionId): JsonResponse
     {
         $collectionName = $request->input('newCollectionName');
@@ -133,6 +188,12 @@ class MediaHubController extends Controller
         return response()->json('', 200);
     }
 
+    /**
+     * Delete Collection.
+     * @param string $collectionId
+     * @return JsonResponse
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function deleteCollection(string $collectionId): JsonResponse
     {
         if (!$collectionId) return response()->json(['error' => 'Es wurde keine Kollektionsid übergeben.'], 400);
@@ -157,6 +218,11 @@ class MediaHubController extends Controller
         return response()->json('', 200);
     }
 
+    /**
+     * Create a new collection.
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function storeCollection(Request $request): JsonResponse
     {
         if (!$request->input('collectionName')) return response()->json(['error' => 'Bitte gebe einen Kollektionsnamen an.'], 400);
