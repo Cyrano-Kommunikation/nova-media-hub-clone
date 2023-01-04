@@ -109,11 +109,12 @@ class MediaHubController extends Controller
     public function moveMediaToCollection(Request $request, $mediaId)
     {
         $collectionName = $request->get('collection');
-        if (!$collectionName) return response()->json(['error' => 'Collection name required.'], 400);
+        if (!$collectionName) return response()->json(['error' => 'Es wird eine Kollektion benötigt, zu der du die Datei verschieben möchtest.'], 400);
 
         $media = MediaHub::getQuery()->findOrFail($mediaId);
+        $collection = MediaHub::getCollectionModel()::findOrFail($collectionName);
 
-        $media->collection_name = $collectionName;
+        $media->collection_id = $collectionName;
         $media->save();
 
         return response()->json($media, 200);

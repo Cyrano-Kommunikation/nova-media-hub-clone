@@ -7,7 +7,7 @@
         <p class="o1-leading-tight">{{ __('novaMediaHub.moveCollectionText') }}</p>
 
         <SelectControl v-model:selected="collection" @change="c => (collection = c)">
-          <option v-for="c in filteredCollections" :key="c" :value="c">{{ c }}</option>
+          <option v-for="c in filteredCollections" :key="c" :value="c.id">{{ c.name }}</option>
         </SelectControl>
       </ModalContent>
 
