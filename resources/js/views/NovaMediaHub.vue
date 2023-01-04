@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <MediaViewModal :show="showMediaViewModal" :mediaItem="ctxMediaItem" :collection="collection"
+    <MediaViewModal :show="showMediaViewModal" :mediaItem="ctxMediaItem" :collection="collection" :roles="roles"
                     @close="showMediaViewModal = false"/>
 
     <MediaUploadModal :show="showMediaUploadModal" @close="closeMediaUploadModal" :active-collection="collection"/>
@@ -96,6 +96,8 @@
     <DeleteCollectionModal :collection="collection" :show="showDeleteCollectionModal"
                            @close="handleCloseDeleteModal"/>
     <CreateCollectionModal @close="handleCloseCreateModal" :show="showCreateCollectionModal"/>
+
+    <EditMediaModal @close="handleCloseEditMediaModal" :show="showEditMediaModal" :roles="roles" :tags="tags" :media="ctxMediaItem" />
   </LoadingView>
 </template>
 
@@ -115,11 +117,13 @@ import HandlesMediaUpload from '../mixins/HandlesMediaUpload';
 import HeroiconsSolidPlusCircle
   from "../../../vendor/laravel/nova/resources/js/components/Heroicons/solid/HeroiconsSolidPlusCircle.vue";
 import CreateCollectionModal from "../modals/CreateCollectionModal.vue";
+import EditMediaModal from "../modals/EditMediaModal.vue";
 
 export default {
   mixins: [HandlesMediaLists, HandlesMediaUpload],
 
   components: {
+    EditMediaModal,
     CreateCollectionModal,
     HeroiconsSolidPlusCircle,
     MediaItem,
@@ -148,6 +152,7 @@ export default {
     showDeleteCollectionModal: false,
     showRenameCollectionModal: false,
     showCreateCollectionModal: false,
+    showEditMediaModal: false,
     showQuickUpload: false,
     quickUploadLoading: false,
   }),
@@ -174,10 +179,18 @@ export default {
     this.loading = true;
     await this.getCollections();
     await this.getMedia();
+    await this.getRoles();
+    await this.getTags();
     this.loading = false;
   },
 
   methods: {
+    async handleCloseEditMediaModal() {
+      await this.getMedia();
+      await this.getRoles();
+      await this.getTags();
+      this.showEditMediaModal = false;
+    },
     async handleCloseRenameModal() {
       await this.refreshData();
       this.showRenameCollectionModal = false;
@@ -246,6 +259,10 @@ export default {
 
       if (action === 'move-collection') {
         this.showMoveCollectionModal = true;
+      }
+
+      if (action === 'edit') {
+        this.showEditMediaModal = true;
       }
     },
 
