@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->uuid('uuid')->nullable()->unique();
 
-            $table->integer('collection_id');
+            $table->unsignedBigInteger('collection_id');
 
             // File info
             $table->string('disk');
