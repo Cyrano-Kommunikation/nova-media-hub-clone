@@ -8,6 +8,8 @@ export default {
 
     collections: [],
     mediaItems: [],
+    roles: [],
+    tags: [],
     orderColumns: ['updated_at', 'created_at'],
 
     currentPage: 1,
@@ -18,17 +20,29 @@ export default {
   }),
 
   methods: {
+    async getTags() {
+      await API.getTags()
+        .then(({data: res}) => {
+          this.tags = res || [];
+        })
+    },
+    async getRoles() {
+      await API.getRoles()
+        .then(({data: res}) => {
+          this.roles = res || [];
+        });
+    },
     async getMedia({
-      collection = this.collection,
-      search = this.search,
-      orderBy = this.orderBy,
-      orderDirection = this.orderDirection,
-      page = this.currentPage,
-    } = {}) {
+                     collection = this.collection,
+                     search = this.search,
+                     orderBy = this.orderBy,
+                     orderDirection = this.orderDirection,
+                     page = this.currentPage,
+                   } = {}) {
       this.loadingMedia = true;
 
-      await API.getMedia({ collection, page, search, orderBy, orderDirection })
-        .then(({ data: res }) => {
+      await API.getMedia({collection, page, search, orderBy, orderDirection})
+        .then(({data: res}) => {
           this.mediaResponse = res;
           this.mediaItems = res.data || [];
           if (this.currentPage !== page) this.currentPage = page;
@@ -40,7 +54,7 @@ export default {
 
     async getCollections() {
       this.loadingCollections = true;
-      const { data } = await API.getCollections();
+      const {data} = await API.getCollections();
       this.collections = data || [];
 
       if (!this.collection) {
