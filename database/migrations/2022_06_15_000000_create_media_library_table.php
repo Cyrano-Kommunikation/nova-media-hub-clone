@@ -46,7 +46,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->timestamp('optimized_at')->nullable();
 
-            $table->foreignId('collection_id')->references('id')->on(MediaHub::getCollectionTableName());
+            $table->foreign('collection_id')->references('id')->on(MediaHub::getCollectionTableName());
         });
 
         Schema::create(MediaHub::getTagTableName(), function (Blueprint $table) {
@@ -61,7 +61,7 @@ return new class extends Migration {
             $table->integer('taggable_id');
             $table->string('taggable_type');
 
-            $table->foreignId('tag_id')->references('id')->on('tags')->cascadeOnDelete();
+            $table->foreign('tag_id')->references('id')->on('tags')->cascadeOnDelete();
         });
     }
 
