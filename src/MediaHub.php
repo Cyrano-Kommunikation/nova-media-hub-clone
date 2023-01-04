@@ -167,6 +167,16 @@ class MediaHub extends Tool
         return config('nova-media-hub.collection_table_name');
     }
 
+    public static function getRoleModel(): string
+    {
+        return config('nova-media-hub.role_model');
+    }
+
+    public static function getTagModel(): string
+    {
+        return config('nova-media-hub.tag_model');
+    }
+
     public static function getMediaModel(): string
     {
         return config('nova-media-hub.model');
@@ -177,11 +187,21 @@ class MediaHub extends Tool
         return config('nova-media-hub.collection_model');
     }
 
+    public static function getTagTableName(): string
+    {
+        return config('nova-media-hub.tag_table_name');
+    }
+
+    public static function getTaggableTableName(): string
+    {
+        return config('nova-media-hub.taggable_table_name');
+    }
+
     public static function getQuery()
     {
         $model = self::getMediaModel();
 
-        return (new $model)->query();
+        return (new $model);
     }
 
     public static function getBasePath()
