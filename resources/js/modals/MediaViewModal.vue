@@ -15,11 +15,37 @@
               <MediaViewModalInfoListItem :label="__('novaMediaHub.collectionTitle')"
                                           :value="selectedCollection?.name ?? 'Unbekannt'"/>
 
-              <div class="" v-if="show">
-                <div v-for="(dataField, i) in dataFields" :key="mediaItem.id + i">
-                  <component :is="`form-${dataField.component}`" :field="dataField"/>
+              <div>
+                <div class="o1-flex o1-flex-col o1-mb-2">
+                  <span
+                    class="o1-text-xs o1-leading-tight o1-text-teal-600 o1-font-semibold o1-ml-1">Schlagwörter</span>
+                  <span
+                    class="o1-bg-slate-50 o1-border o1-border-slate-100 o1-rounded-md o1-px-2 o1-py-1 o1-whitespace-nowrap o1-text-slate-500 dark:o1-bg-slate-800 dark:o1-border-slate-700 dark:o1-text-slate-400 o1-overflow-x-auto"
+                  >
+                    <span v-if="mediaItem.tags.length === 0">
+                      Keine Schlagwörter zugewiesen
+                    </span>
+                  <div v-for="tag in mediaItem.tags" :key="tag.id">
+                    {{ tag.name }}
+                  </div>
+                  </span>
+                </div>
+                <div class="o1-flex o1-flex-col o1-mb-2">
+                  <span
+                    class="o1-text-xs o1-leading-tight o1-text-teal-600 o1-font-semibold o1-ml-1">Benutzergruppen</span>
+                  <span
+                    class="o1-bg-slate-50 o1-border o1-border-slate-100 o1-rounded-md o1-px-2 o1-py-1 o1-whitespace-nowrap o1-text-slate-500 dark:o1-bg-slate-800 dark:o1-border-slate-700 dark:o1-text-slate-400 o1-overflow-x-auto"
+                  >
+                    <span v-if="mediaItem.roles.length === 0">
+                      Keine Benutzergruppe zugewiesen.
+                    </span>
+                    <span v-for="role in mediaItem.roles" :key="role.id" class="after:o1-content-[',_'] last:after:o1-content-['']">
+                      {{ role.name }}
+                    </span>
+                  </span>
                 </div>
               </div>
+
               <div>
               </div>
             </div>
@@ -62,12 +88,15 @@
 import API from '../api';
 import MediaViewModalInfoListItem from '../components/MediaViewModalInfoListItem';
 import DividerLine from "../../../vendor/laravel/nova/resources/js/components/DividerLine.vue";
+import HandlesMediaLists from "../mixins/HandlesMediaLists";
 
 export default {
   emits: ['close'],
-  props: ['show', 'mediaItem', 'collection'],
+  props: ['show', 'mediaItem', 'collection', 'roles', 'tags'],
 
   components: {DividerLine, MediaViewModalInfoListItem},
+
+  mixins: [HandlesMediaLists],
 
   data: () => ({
     loading: false,
