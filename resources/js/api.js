@@ -35,5 +35,13 @@ export default {
 
   async createCollection(collectionName) {
     return Nova.request().post(`${PREFIX}/collection/store`, { collectionName });
+  },
+
+  async getRoles() {
+    return Nova.request().get(`${PREFIX}/roles/retrieve`);
+  },
+
+  async getTags() {
+    return Nova.request().get(`${PREFIX}/tags/retrieve`);
   }
 };

@@ -27,4 +27,7 @@ Route::prefix('/nova-vendor/media-hub')->group(function () {
     Route::post('collection/store', [MediaHubController::class, 'storeCollection']);
     Route::post('collection/{collection}/rename', [MediaHubController::class, 'rename']);
     Route::delete('collection/{collection}/delete', [MediaHubController::class, 'deleteCollection']);
+
+    Route::get('roles/retrieve', [MediaHubController::class, 'getRoles']);
+    Route::get('tags/retrieve', [MediaHubController::class, 'getTags']);
 });
