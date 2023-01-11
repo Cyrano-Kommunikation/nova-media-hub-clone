@@ -30,7 +30,7 @@ class FileHandler
     protected string $pathToFile = '';
     protected string $diskName = '';
     protected string $conversionsDiskName = '';
-    protected string $collectionName = '';
+    protected int $collection_id = 1;
     protected array $modelData = [];
     protected bool $deleteOriginal = false;
 
@@ -95,9 +95,9 @@ class FileHandler
         return $this;
     }
 
-    public function withCollection(string $collectionName)
+    public function withCollection(int $collectionName)
     {
-        $this->collection_name = $collectionName;
+        $this->collection_id = $collectionName;
         return $this;
     }
 
@@ -145,7 +145,7 @@ class FileHandler
 
         // Validate file
         $fileValidator = MediaHub::getFileValidator();
-        $fileValidator->validateFile($this->collectionName, $this->pathToFile, $this->fileName, $extension, $mimeType, $fileSize);
+        $fileValidator->validateFile($this->collection_id, $this->pathToFile, $this->fileName, $extension, $mimeType, $fileSize);
 
         $mediaClass = MediaHub::getMediaModel();
         $media = new $mediaClass($this->modelData ?? []);
