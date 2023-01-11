@@ -77,8 +77,7 @@ class MediaHub extends Tool
 
     public static function getDataFields(): array
     {
-        $mediaHubTool = static::getSelfTool();
-        return $mediaHubTool?->customFields ?? [];
+        return [];
     }
 
     public static function getSelfTool()
