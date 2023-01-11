@@ -1,7 +1,7 @@
 <template>
   <Modal :show="show" role="alertdialog" id="o1-nmh-move-collection-modal">
     <div class="o1-bg-white dark:o1-bg-gray-800 o1-rounded-lg o1-shadow-lg o1-overflow-hidden" style="width: 460px">
-      <ModalHeader v-text="__('novaMediaHub.moveCollectionTitle')" />
+      <ModalHeader v-text="__('novaMediaHub.moveCollectionTitle')"/>
 
       <ModalContent class="o1-flex o1-flex-col">
         <p class="o1-leading-tight">{{ __('novaMediaHub.moveCollectionText') }}</p>
@@ -18,8 +18,9 @@
           </LinkButton>
 
           <LoadingButton @click.prevent="handleMove" :disabled="loading" :processing="loading">{{
-            __('novaMediaHub.moveButton')
-          }}</LoadingButton>
+              __('novaMediaHub.moveButton')
+            }}
+          </LoadingButton>
         </div>
       </ModalFooter>
     </div>
@@ -37,7 +38,7 @@ export default {
 
   props: ['show', 'mediaItem'],
 
-  data: () => ({ loading: false }),
+  data: () => ({loading: false}),
 
   async mounted() {
     await this.getCollections();
@@ -45,7 +46,7 @@ export default {
 
   watch: {
     show(newValue) {
-      this.collection = this.filteredCollections[0];
+      this.collection = this.filteredCollections.length > 0 ? this.filteredCollections[0].id : null;
     },
   },
 
@@ -53,9 +54,14 @@ export default {
     async handleMove() {
       this.loading = true;
 
-      await API.moveMediaToCollection(this.mediaItem.id, this.collection);
+      const result = await API.moveMediaToCollection(this.mediaItem.id, this.collection);
+      if (result.response?.data?.error) {
+        Nova.$toasted.error(result.response.data.error);
+      } else {
+        console.log(result);
+        Nova.$toasted.success(this.__('novaMediaHub.successfullyMovedToCollection', {collection: result.data.collection.name}));
+      }
 
-      Nova.$toasted.success(this.__('novaMediaHub.successfullyMovedToCollection', { collection: this.collection }));
 
       this.$emit('close', true);
 
@@ -66,7 +72,7 @@ export default {
   computed: {
     filteredCollections() {
       if (!this.mediaItem) return this.collections;
-      return this.collections.filter(c => c !== this.mediaItem.collection_name);
+      return this.collections.filter(c => c.id !== this.mediaItem.collection_id);
     },
   },
 };
