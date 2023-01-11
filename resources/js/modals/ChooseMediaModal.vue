@@ -42,9 +42,11 @@
             <div class="o1-flex o1-flex-col o1-gap-5 o1-w-full o1-max-w-xs o1-pr-8 overflow-y-auto">
               <!-- Choose collection -->
               <ModalFilterItem :title="__('novaMediaHub.chooseCollectionTitle')">
-                <SelectControl v-model:selected="collection" @change="c => (collection = c.id)">
-                  <option value="">{{ '> Alle anzeigen' }}</option>
-                  <option v-for="c in collections" :key="c" :value="c.id">{{ c.name }}</option>
+                <SelectControl v-model:selected="collection" @change="changeCollection($event)">
+                  <option :selected="index === 0" v-for="(c, index) in collections" :key="c" :value="c.id">{{
+                      c.name
+                    }}
+                  </option>
                 </SelectControl>
               </ModalFilterItem>
 
@@ -74,7 +76,7 @@
                 <div class="o1-leading-tight o1-text-teal-500 o1-font-bold o1-text-md o1-mb-2">
                   {{ __('novaMediaHub.quickUpload') }}
                 </div>
-                <DropZone @change="uploadFiles" :multiple="true" />
+                <DropZone @change="uploadFiles" :multiple="true"/>
               </div>
             </div>
 
@@ -132,8 +134,8 @@
       </ModalFooter>
     </LoadingCard>
 
-    <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose" />
-    <MediaViewModal :mediaItem="ctxMediaItem" @close="closeViewModal" :show="showMediaViewModal" />
+    <ConfirmDeleteModal :show="showConfirmDeleteModal" :mediaItem="ctxMediaItem" @close="handleDeleteModalClose"/>
+    <MediaViewModal :mediaItem="ctxMediaItem" @close="closeViewModal" :show="showMediaViewModal"/>
 
     <MediaItemContextMenu
       id="media-choose-modal-ctx-menu"
@@ -172,42 +174,36 @@ export default {
     MediaOrderSelect,
     MediaViewModal,
   },
-
   emits: ['close', 'confirm'],
   props: ['show', 'field', 'activeCollection', 'initialSelectedMediaItems'],
-
   data: () => ({
     selectedMediaItems: [],
-
     loading: false,
     showConfirmDeleteModal: false,
     showMediaViewModal: false,
-
     ctxOptions: [],
     ctxMediaItem: void 0,
     ctxShowEvent: void 0,
     ctxShowingModal: false,
   }),
-
   created() {
     this.$watch(
-      () => ({ collection: this.collection, search: this.search, orderBy: this.orderBy }),
-      data => this.getMedia({ ...data, page: 1 })
+      () => ({collection: this.collection, search: this.search, orderBy: this.orderBy}),
+      data => {
+        console.log(this.collection);
+        this.getMedia({...data, page: 1})
+      }
     );
   },
-
   async mounted() {
-    if (this.field.defaultCollectionName) this.collection = this.field.defaultCollectionName;
     await this.getCollections();
     this.$nextTick(() => (this.loading = false));
   },
-
   watch: {
     async show(newValue) {
       if (newValue) {
         await this.getCollections();
         this.selectedCollection = this.activeCollection;
-
         const iniVal = this.initialSelectedMediaItems;
         if (Array.isArray(iniVal)) {
           this.selectedMediaItems = [...iniVal];
@@ -219,21 +215,19 @@ export default {
       }
     },
   },
-
   methods: {
+    changeCollection(event) {
+      this.collection = event;
+    },
     async uploadFiles(selectedFiles) {
       this.loading = true;
-
-      const { success, media } = await this.uploadFilesToCollection(selectedFiles, this.collection);
-
+      const {success, media} = await this.uploadFilesToCollection(selectedFiles, this.collection);
       if (success) {
-        await this.getMedia({ collection: this.collection });
+        await this.getMedia({collection: this.collection});
         media.map(this.toggleMediaSelection);
       }
-
       this.loading = false;
     },
-
     toggleMediaSelection(mediaItem) {
       if (this.selectedMediaItems.find(mi => mi.id === mediaItem.id)) {
         this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id !== mediaItem.id);
@@ -245,77 +239,62 @@ export default {
         }
       }
     },
-
     confirm() {
       this.$emit('confirm', this.field.multiple ? this.selectedMediaItems : this.selectedMediaItems[0]);
     },
-
     openContextMenuFromSelected(event, mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.ctxOptions = [
-        { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
-        { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
-        { name: this.__('novaMediaHub.contextOpenCollection'), action: 'open-collection' },
-        { type: 'divider' },
-        { name: this.__('novaMediaHub.contextDeselect'), action: 'deselect', class: 'warning' },
-        { name: this.__('novaMediaHub.contextDeselectOthers'), action: 'deselect-others', class: 'warning' },
+        {name: this.__('novaMediaHub.contextViewEdit'), action: 'view'},
+        {name: this.__('novaMediaHub.contextDownload'), action: 'download'},
+        {name: this.__('novaMediaHub.contextOpenCollection'), action: 'open-collection'},
+        {type: 'divider'},
+        {name: this.__('novaMediaHub.contextDeselect'), action: 'deselect', class: 'warning'},
+        {name: this.__('novaMediaHub.contextDeselectOthers'), action: 'deselect-others', class: 'warning'},
       ];
-
       this.$nextTick(() => (this.ctxShowEvent = event));
     },
-
     openContextMenuFromChoose(event, mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.ctxOptions = [
-        { name: this.__('novaMediaHub.contextSelect'), action: 'select' },
-        { name: this.__('novaMediaHub.contextViewEdit'), action: 'view' },
-        { name: this.__('novaMediaHub.contextDownload'), action: 'download' },
-        { type: 'divider' },
-        { name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning' },
+        {name: this.__('novaMediaHub.contextSelect'), action: 'select'},
+        {name: this.__('novaMediaHub.contextViewEdit'), action: 'view'},
+        {name: this.__('novaMediaHub.contextDownload'), action: 'download'},
+        {type: 'divider'},
+        {name: this.__('novaMediaHub.contextDelete'), action: 'delete', class: 'warning'},
       ];
-
       this.$nextTick(() => (this.ctxShowEvent = event));
     },
-
     contextOptionClick(event) {
       const action = event.option.action || void 0;
-
       if (action === 'delete') {
         this.showConfirmDeleteModal = true;
       }
-
       if (action === 'select' || action === 'deselect') {
         this.toggleMediaSelection(this.ctxMediaItem);
       }
-
       if (action === 'open-collection') {
         this.collection = this.ctxMediaItem.collection_name;
       }
-
       if (action === 'deselect-others') {
         this.selectedMediaItems = this.selectedMediaItems.filter(mi => mi.id === this.ctxMediaItem.id);
       }
     },
-
     handleDeleteModalClose(update = false) {
       this.showConfirmDeleteModal = false;
-      if (update) this.getMedia({ collection: this.collection });
+      if (update) this.getMedia({collection: this.collection});
     },
-
     openViewMediaModal(mediaItem) {
       this.ctxMediaItem = mediaItem;
       this.showMediaViewModal = true;
     },
-
     closeViewModal() {
       this.showMediaViewModal = false;
     },
-
     async switchToPage(page) {
       await this.goToMediaPage(page);
       Nova.$emit('resources-loaded');
     },
-
     closeViaEscape() {
       // Close only if context isn't showing anything
       if (!this.ctxShowingModal && !this.showConfirmDeleteModal && !this.showMediaViewModal) {
@@ -323,7 +302,6 @@ export default {
       }
     },
   },
-
   computed: {
     selectedCount() {
       return this.selectedMediaItems.length;
