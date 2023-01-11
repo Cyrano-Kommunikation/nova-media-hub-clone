@@ -15,7 +15,7 @@ use Cyrano\MediaHub\Models\Media;
 |
 */
 
-Route::prefix('/nova-vendor/media-hub')->group(function () {
+Route::middleware('auth:staff')->prefix('/nova-vendor/media-hub')->group(function () {
     Route::get('/media', [MediaHubController::class, 'getMedia']);
     Route::get('/collections', [MediaHubController::class, 'getCollections']);
 
