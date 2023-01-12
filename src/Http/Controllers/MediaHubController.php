@@ -18,9 +18,9 @@ use Illuminate\Support\Facades\DB;
 
 class MediaHubController extends Controller
 {
-    public function getCollections(Request $request)
+    public function getCollections()
     {
-        $collections = MediaHub::getCollectionModel()::with('medias.tags')->get()->toArray();
+        $collections = MediaHub::getCollectionModel()::all()->toArray();
 
         return response()->json($collections, 200);
     }
