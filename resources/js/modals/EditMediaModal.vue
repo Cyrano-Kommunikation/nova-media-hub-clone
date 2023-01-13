@@ -18,7 +18,7 @@
                  class="form-control form-input form-input-bordered w-full mt-4"
                  placeholder="Schlagwörter" @keydown.enter="addTag">
           <div v-show="showTagDropdown"
-               class="o1-w-[394px] o1-absolute o1-z-[1000] top[40px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-bg-gray-200 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-scroll"
+               class="o1-w-[394px] o1-absolute o1-z-[1000] top[40px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-scroll"
                v-if="filterTags.length > 0">
             <div class="o1-p-4 cursor-pointer o1-border-b o1-border-gray-300 dark:o1-border-gray-700"
                  @click="addTagFromSelect(tag)" v-for="tag in filterTags" :key="tag">
