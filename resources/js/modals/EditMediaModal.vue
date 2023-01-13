@@ -61,21 +61,12 @@
                 Es wurden keine Benutzergruppen zugewiesen.
               </div>
               <span
-                class="o1-text-xs o1-px-3 o1-py-1 o1-bg-slate-300 o1-m-1 last:o1-mr-0 o1-rounded-xl o1-inline-block"
+                class="o1-text-xs o1-px-3 o1-py-1 o1-bg-slate-300 dark:o1-bg-slate-500 o1-m-1 last:o1-mr-0 o1-rounded-xl o1-inline-block"
                 v-for="(role, index) in selectedRoles" :key="role">
                 <span class="o1-inline-block">{{ getRoleData(role).name }}</span>
                 <HeroiconsSolidX class="o1-w-3 o1-h-3 o1-ml-2 o1-inline-block cursor-pointer"
                                  @click="removeRole(role)"/>
               </span>
-              <!--              <div-->
-              <!--                class="o1-p-2 last:o1-border-0 o1-border-b o1-border-gray-300 dark:o1-border-gray-700 o1-transition-all hover:o1-bg-gray-300 dark:hover:o1-bg-gray-800 cursor-pointer o1-flex o1-items-center"-->
-              <!--                v-for="role in selectedRoles" :key="role" @click="removeRole(role)">-->
-              <!--                <transition enter-from-class="o1-opacity-0 o1-translate-x-[-50px]"-->
-              <!--                            leave-to-class="o1-opacity-0 o1-translate-x-[-50px]">-->
-              <!--                  <HeroiconsSolidCheck class="o1-w-4 o1-h-4 o1-mr-2" v-show="checkIfRoleIsSelected(role)"/>-->
-              <!--                </transition>-->
-              <!--                {{ getRoleData(role).name }}-->
-              <!--              </div>-->
             </div>
             <small>Wenn keine Gruppe ausgewählt ist, hat jeder Nutzer Zugriff auf die Datei.</small>
           </div>
