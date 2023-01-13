@@ -7,11 +7,11 @@
       @option-clicked="onOptionClicked"
     />
 
-    <MediaViewModal :mediaItem="mediaItem" @close="closeViewModal" :show="showMediaViewModal" />
+    <MediaViewModal :mediaItem="mediaItem" @close="closeViewModal" :show="showMediaViewModal"/>
 
     <a
       v-if="mediaItem"
-      :href="mediaItem.url"
+      @click="downloadItem"
       download
       ref="downloadAnchor"
       target="_BLANK"
@@ -22,11 +22,12 @@
 </template>
 
 <script>
+import API from '../api';
 import MediaViewModal from '../modals/MediaViewModal';
 import VueSimpleContextMenu from 'vue-simple-context-menu/src/vue-simple-context-menu';
 
 export default {
-  components: { VueSimpleContextMenu, MediaViewModal },
+  components: {VueSimpleContextMenu, MediaViewModal},
 
   props: ['id', 'showEvent', 'options', 'mediaItem'],
 
@@ -47,6 +48,19 @@ export default {
   },
 
   methods: {
+    async downloadItem() {
+      const result = await API.downloadFile(this.mediaItem.id);
+      const blob = new Blob([result.data], {
+        type: this.mediaItem.mime_type
+      });
+
+      const objectURL = window.URL.createObjectURL(blob);
+
+      let link = document.createElement('a');
+      link.href = objectURL;
+      link.download = this.mediaItem.file_name;
+      link.click();
+    },
     onOptionClicked(event) {
       const action = event.option.action || void 0;
 
