@@ -13,10 +13,7 @@
   "autoload": {
     "psr-4": {
       "Cyrano\\MediaHub\\": "src/"
-    },
-    "files": [
-      "src/Helper/helper.php"
-    ]
+    }
   },
   "extra": {
     "laravel": {
