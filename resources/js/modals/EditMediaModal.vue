@@ -16,9 +16,9 @@
         <div class="o1-mt-8 relative">
           <input v-model="inputTag" @input="handleInputChange" type="text"
                  class="form-control form-input form-input-bordered w-full mt-4"
-                 placeholder="Tags" @keydown.enter="addTag">
+                 placeholder="Schlagwörter" @keydown.enter="addTag">
           <div v-show="showTagDropdown"
-               class="o1-w-[394px] o1-absolute top[40px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-scroll"
+               class="o1-w-[394px] o1-absolute o1-z-[1000] top[40px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-scroll"
                v-if="filterTags.length > 0">
             <div class="o1-p-4 cursor-pointer o1-border-b o1-border-gray-300 dark:o1-border-gray-700"
                  @click="addTagFromSelect(tag)" v-for="tag in filterTags" :key="tag">
@@ -27,11 +27,6 @@
           </div>
           <div
             class="o1-w-full dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 o1-p-2">
-            <div
-              class="o1-p-2 last:o1-border-0 o1-border-b o1-border-gray-300 dark:o1-border-gray-700 o1-transition-all hover:o1-bg-gray-300 dark:hover:o1-bg-gray-800"
-              v-if="selectedTags.length === 0">
-              Es wurden keine Tags zugewiesen
-            </div>
             <span
               class="o1-text-xs o1-px-3 o1-py-1 o1-bg-slate-700 o1-m-1 o1-rounded-xl o1-inline-block"
               v-for="(tag, index) in selectedTags" :key="tag">
@@ -49,7 +44,7 @@
               Benutzergruppen auswählen
             </Button>
             <div v-show="showRoleDropdown"
-                 class="o1-w-[394px] o1-absolute o1-top-[-60px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-scroll"
+                 class="o1-w-[394px] o1-absolute o1-z-[1000] o1-top-[-60px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-scroll"
                  v-if="filterRoles.length > 0">
               <div class="o1-p-4 cursor-pointer o1-border-b o1-border-gray-300 dark:o1-border-gray-700"
                    v-for="role in filterRoles"

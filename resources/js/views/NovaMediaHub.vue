@@ -33,7 +33,7 @@
 
           <Link v-for="col in collections" :key="col.name" :href="`${basePath}/${col.id}`"
                 class="o1-p-4 o1-bg-slate-50 o1-border-b o1-border-slate-200 hover:o1-bg-slate-100 dark:o1-border-slate-600 dark:o1-bg-slate-700 dark:hover:o1-bg-slate-800 dark:transition-all"
-                :class="{ 'font-bold text-cyan-500 dark:o1-text-cyan-500 o1-bg-slate-200 dark:o1-bg-gray-900': col.name === collection }">
+                :class="{ 'font-bold text-cyan-500 dark:o1-text-cyan-500 o1-bg-slate-200 dark:o1-bg-gray-900': col.id === collection }">
             {{ col.name }}
           </Link>
           <a href="#"

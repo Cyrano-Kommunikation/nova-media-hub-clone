@@ -58,10 +58,8 @@ export default {
       if (result.response?.data?.error) {
         Nova.$toasted.error(result.response.data.error);
       } else {
-        console.log(result);
-        Nova.$toasted.success(this.__('novaMediaHub.successfullyMovedToCollection', {collection: result.data.collection.name}));
+        Nova.$toasted.success('Du hast die Datei erfolgreich in die ausgewählte Kollektion verschoben.');
       }
-
 
       this.$emit('close', true);
 

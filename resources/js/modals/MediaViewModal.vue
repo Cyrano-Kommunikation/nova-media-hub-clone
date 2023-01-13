@@ -12,8 +12,6 @@
               <MediaViewModalInfoListItem :label="__('novaMediaHub.fileNameTitle')" :value="mediaItem.file_name"/>
               <MediaViewModalInfoListItem :label="__('novaMediaHub.fileSizeTitle')" :value="fileSize"/>
               <MediaViewModalInfoListItem :label="__('novaMediaHub.mimeTypeTitle')" :value="mediaItem.mime_type"/>
-              <MediaViewModalInfoListItem :label="__('novaMediaHub.collectionTitle')"
-                                          :value="selectedCollection?.name ?? 'Unbekannt'"/>
 
               <div>
                 <div class="o1-flex o1-flex-col o1-mb-2">
