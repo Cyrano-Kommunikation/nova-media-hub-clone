@@ -264,7 +264,8 @@ class MediaHubController extends Controller
             if (!File::exists($path)) {
                 return null;
             }
-            $imageStream = Image::make(File::get($path))->stream('webp');
+
+            $imageStream = Image::make(File::get($path))->stream();
             return $imageStream->__toString();
         }
 
