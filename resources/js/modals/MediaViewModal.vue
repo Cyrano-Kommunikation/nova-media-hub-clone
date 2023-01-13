@@ -39,7 +39,8 @@
                     <span v-if="mediaItem.roles.length === 0">
                       Keine Benutzergruppe zugewiesen.
                     </span>
-                    <span v-for="role in mediaItem.roles" :key="role.id" class="after:o1-content-[',_'] last:after:o1-content-['']">
+                    <span v-for="role in mediaItem.roles" :key="role.id"
+                          class="after:o1-content-[',_'] last:after:o1-content-['']">
                       {{ role.name }}
                     </span>
                   </span>
@@ -53,9 +54,10 @@
             <!-- File itself -->
             <div class="o1-flex o1-flex-col o1-m-auto o1-h-full o1-w-full o1-items-center o1-justify-center"
                  style="max-height: 60vh">
-              <img v-if="type === 'image'"
+              <Loader v-show="type === 'image' && !image"></Loader>
+              <img v-if="type === 'image'" v-show="image"
                    class="o1-object-contain o1-max-w-full o1-w-full o1-max-h-full o1-border o1-border-slate-100 o1-bg-slate-50 o1-min-h-0 dark:o1-bg-slate-900 dark:o1-border-slate-700"
-                   :src="mediaItem.url" :alt="mediaItem.file_name"/>
+                   :src="image" :alt="mediaItem.file_name"/>
 
               <video v-else-if="type === 'video'" controls autoplay class="o1-ml-auto o1-h-full o1-w-full o1-min-h-0">
                 <source :src="mediaItem.url" :type="mediaItem.mime_type"/>
@@ -65,9 +67,9 @@
                 <source :src="mediaItem.url" :type="mediaItem.mime_type"/>
               </audio>
 
-              <a v-else :href="mediaItem.url">
-                {{ mediaItem.url }}
-              </a>
+              <div v-else>
+                Bei dieser Datei handelt es sich um kein Bild / Video / Audio, dadurch ist die Vorschau nicht verfügbar.
+              </div>
             </div>
           </div>
         </ModalContent>
@@ -105,7 +107,11 @@ export default {
     selectedCollection: '',
     collections: [],
     dataFields: [],
+    image: ''
   }),
+
+  async created() {
+  },
 
   async mounted() {
     Nova.$emit('close-dropdowns');
@@ -114,8 +120,17 @@ export default {
   watch: {
     async show(newValue) {
       if (newValue) {
+        const response = await API.getImage(this.mediaItem.file_name, this.mediaItem.id, this.mediaItem.mime_type);
+        this.image = window.URL.createObjectURL(response.data);
+        console.log(this.image);
         await this.getCollections();
         this.selectedCollection = this.collections.find(col => col.id === this.collection);
+      } else {
+        if (!this.image) {
+          return;
+        }
+        window.URL.revokeObjectURL(this.image);
+        this.image = null;
       }
     },
   },

@@ -2,7 +2,7 @@ const PREFIX = '/nova-vendor/media-hub';
 
 export default {
   async getMedia(params) {
-    return Nova.request().get(`${PREFIX}/media`, { params });
+    return Nova.request().get(`${PREFIX}/media`, {params});
   },
 
   async getCollections() {
@@ -18,7 +18,7 @@ export default {
   },
 
   async moveMediaToCollection(mediaId, collection) {
-    return Nova.request().post(`${PREFIX}/media/${mediaId}/move`, { collection });
+    return Nova.request().post(`${PREFIX}/media/${mediaId}/move`, {collection});
   },
 
   async updateMediaData(mediaId, formData) {
@@ -26,7 +26,7 @@ export default {
   },
 
   async renameCollection(oldCollectionName, newCollectionName) {
-    return Nova.request().post(`${PREFIX}/collection/${oldCollectionName}/rename`, { newCollectionName });
+    return Nova.request().post(`${PREFIX}/collection/${oldCollectionName}/rename`, {newCollectionName});
   },
 
   async deleteCollection(collectionId) {
@@ -34,7 +34,7 @@ export default {
   },
 
   async createCollection(collectionName) {
-    return Nova.request().post(`${PREFIX}/collection/store`, { collectionName });
+    return Nova.request().post(`${PREFIX}/collection/store`, {collectionName});
   },
 
   async getRoles() {
@@ -43,5 +43,21 @@ export default {
 
   async getTags() {
     return Nova.request().get(`${PREFIX}/tags/retrieve`);
+  },
+
+  async getImage(fileName, fileId, mime_type) {
+    return Nova.request().post(`${PREFIX}/image/retrieve`, {
+      fileName,
+      fileId,
+      mime_type
+    }, {
+      responseType: 'blob'
+    });
+  },
+
+  async downloadFile(fileId) {
+    return Nova.request().post(`${PREFIX}/file/${fileId}/download`, {}, {
+      responseType: 'arrayBuffer'
+    });
   }
 };

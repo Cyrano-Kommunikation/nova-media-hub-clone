@@ -100,6 +100,7 @@ export default {
       }
 
       if (success) {
+        this.selectedFiles = [];
         this.$emit('close', true, goToCollection);
       }
 

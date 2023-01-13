@@ -30,4 +30,6 @@ Route::middleware('auth:staff')->prefix('/nova-vendor/media-hub')->group(functio
 
     Route::get('roles/retrieve', [MediaHubController::class, 'getRoles']);
     Route::get('tags/retrieve', [MediaHubController::class, 'getTags']);
+    Route::post('image/retrieve', [MediaHubController::class, 'getImage']);
+    Route::post('file/{file}/download', [MediaHubController::class, 'downloadFile']);
 });
