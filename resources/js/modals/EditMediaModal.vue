@@ -61,7 +61,7 @@
                 Es wurden keine Benutzergruppen zugewiesen.
               </div>
               <span
-                class="o1-text-xs o1-px-3 o1-py-1 o1-bg-slate-700 o1-m-1 last:o1-mr-0 o1-rounded-xl o1-inline-block"
+                class="o1-text-xs o1-px-3 o1-py-1 o1-bg-slate-300 o1-m-1 last:o1-mr-0 o1-rounded-xl o1-inline-block"
                 v-for="(role, index) in selectedRoles" :key="role">
                 <span class="o1-inline-block">{{ getRoleData(role).name }}</span>
                 <HeroiconsSolidX class="o1-w-3 o1-h-3 o1-ml-2 o1-inline-block cursor-pointer"
