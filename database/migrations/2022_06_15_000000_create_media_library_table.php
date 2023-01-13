@@ -57,7 +57,7 @@ return new class extends Migration {
         });
 
         Schema::create(MediaHub::getTaggableTableName(), function (Blueprint $table) {
-            $table->bigInteger('tag_id')->unsigned();
+            $table->unsignedBigInteger('tag_id')->unsigned();
             $table->integer('taggable_id');
             $table->string('taggable_type');
 

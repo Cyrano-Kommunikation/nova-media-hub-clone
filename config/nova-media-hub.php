@@ -58,6 +58,12 @@ return [
         'video/mp4',
         'text/csv',
         'application/pdf',
+        'image/x-eps',
+        'text/rtf',
+        'application/vnd.mx-excel',
+        'application/msword',
+        'image/tiff',
+        'application/zip',
     ],
 
     // Job queue configuration
@@ -110,7 +116,6 @@ return [
         // Set to null if you don't want the original image to be resized
         'max_dimensions' => 2000,
     ],
-
 
 
     // ------------------------------

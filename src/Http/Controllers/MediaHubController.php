@@ -15,6 +15,9 @@ use Cyrano\MediaHub\MediaHandler\Support\Filesystem;
 use Cyrano\MediaHub\Models\Media;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class MediaHubController extends Controller
 {
@@ -109,7 +112,12 @@ class MediaHubController extends Controller
     public function moveMediaToCollection(Request $request, $mediaId)
     {
         $collectionName = $request->get('collection');
-        if (!$collectionName) return response()->json(['error' => 'Es wird eine Kollektion benötigt, zu der du die Datei verschieben möchtest.'], 400);
+        if (!$collectionName) {
+            return response()->json(
+                ['error' => 'Es wird eine Kollektion benötigt, zu der du die Datei verschieben möchtest.'],
+                400
+            );
+        }
 
         $media = MediaHub::getQuery()->findOrFail($mediaId);
         $collection = MediaHub::getCollectionModel()::findOrFail($collectionName);
@@ -179,7 +187,9 @@ class MediaHubController extends Controller
     public function rename(Request $request, string $collectionId): JsonResponse
     {
         $collectionName = $request->input('newCollectionName');
-        if (!$collectionName) return response()->json(['error' => 'Der neue Kollektionsname wird benötigt.'], 400);
+        if (!$collectionName) {
+            return response()->json(['error' => 'Der neue Kollektionsname wird benötigt.'], 400);
+        }
 
         $collection = MediaHub::getCollectionModel()::findOrFail($collectionId);
 
@@ -197,7 +207,9 @@ class MediaHubController extends Controller
      */
     public function deleteCollection(string $collectionId): JsonResponse
     {
-        if (!$collectionId) return response()->json(['error' => 'Es wurde keine Kollektionsid übergeben.'], 400);
+        if (!$collectionId) {
+            return response()->json(['error' => 'Es wurde keine Kollektionsid übergeben.'], 400);
+        }
 
         $collection = MediaHub::getCollectionModel()::findOrFail($collectionId);
 
@@ -205,7 +217,10 @@ class MediaHubController extends Controller
         $defaultCollections = MediaHub::getDefaultCollections();
 
         if (in_array($collection->name, $defaultCollections)) {
-            return response()->json(['errors' => ['Du kannst diese Kollektion nicht löschen, da diese als Standard festgelegt wurde.']], 400);
+            return response()->json(
+                ['errors' => ['Du kannst diese Kollektion nicht löschen, da diese als Standard festgelegt wurde.']],
+                400
+            );
         }
 
         $collection->delete();
@@ -226,7 +241,9 @@ class MediaHubController extends Controller
      */
     public function storeCollection(Request $request): JsonResponse
     {
-        if (!$request->input('collectionName')) return response()->json(['error' => 'Bitte gebe einen Kollektionsnamen an.'], 400);
+        if (!$request->input('collectionName')) {
+            return response()->json(['error' => 'Bitte gebe einen Kollektionsnamen an.'], 400);
+        }
 
         MediaHub::getCollectionModel()::create([
             'name' => $request->input('collectionName'),
@@ -234,5 +251,40 @@ class MediaHubController extends Controller
         ]);
 
         return response()->json('', 200);
+    }
+
+
+    public function getImage(Request $request)
+    {
+        $fileName = $request->get('fileName');
+        $fileId = $request->get('fileId');
+        if (str_contains($request->get('mime_type'), 'image')) {
+            $path = storage_path() . '/app/media/' . $fileId . '/' . $fileName;
+
+            if (!File::exists($path)) {
+                return null;
+            }
+            $imageStream = Image::make(File::get($path))->stream('webp');
+            return $imageStream->__toString();
+        }
+
+        return null;
+    }
+
+    public function downloadFile($id)
+    {
+        $mediaItem = Media::findOrFail($id);
+
+        $path = storage_path() . '/app/media/' . $id . '/' . $mediaItem->file_name;
+        if (!File::exists($path)) {
+            return response()->json([
+                'error' => 'Diese Datei existiert nicht.'
+            ], 200);
+        }
+
+
+        return response()->download($path, $mediaItem->file_name, [
+            'Content-Type' => $mediaItem->mime_type
+        ]);
     }
 }

@@ -1,36 +1,39 @@
 {
-    "name": "cyrano/media-hub",
-    "description": "A Laravel Nova tool.",
-    "keywords": [
-        "laravel",
-        "nova"
-    ],
-    "license": "MIT",
-    "require": {
-        "php": "^7.3|^8.0",
-        "laravel/nova": "^4.19"
+  "name": "cyrano/media-hub",
+  "description": "A Laravel Nova tool.",
+  "keywords": [
+    "laravel",
+    "nova"
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^7.3|^8.0",
+    "laravel/nova": "^4.19"
+  },
+  "autoload": {
+    "psr-4": {
+      "Cyrano\\MediaHub\\": "src/"
     },
-    "autoload": {
-        "psr-4": {
-            "Cyrano\\MediaHub\\": "src/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Cyrano\\MediaHub\\MediaHubServiceProvider"
-            ]
-        }
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
-        }
+    "files": [
+      "src/Helper/helper.php"
     ]
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Cyrano\\MediaHub\\MediaHubServiceProvider"
+      ]
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://nova.laravel.com"
+    }
+  ]
 }

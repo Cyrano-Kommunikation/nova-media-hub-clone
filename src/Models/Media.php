@@ -6,7 +6,10 @@ use Cyrano\MediaHub\MediaHub;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class Media extends Model
 {
@@ -46,25 +49,25 @@ class Media extends Model
     public function getThumbnailUrlAttribute()
     {
         $thumbnailConversionName = MediaHub::getThumbnailConversionName();
-        if (!$thumbnailConversionName) return null;
+        if (!$thumbnailConversionName) {
+            return null;
+        }
 
         $thumbnailName = $this->conversions[$thumbnailConversionName] ?? null;
-        if (!$thumbnailName) return null;
+        if (!$thumbnailName) {
+            return null;
+        }
 
         return Storage::disk($this->conversions_disk)->url($this->conversionsPath . $thumbnailName);
     }
 
-    public function formatForNova()
+    public function formatForNova(): array
     {
-        $data = null;
-        if (str_contains($this->mime_type, 'image')) {
-            $data = file_get_contents(storage_path("app/media/$this->id/$this->file_name"));
-        }
         return [
             'id' => $this->id,
             'collection_id' => $this->collection_id,
-            'url' => $data ? 'data:' . $this->mime_type . ';base64,' . base64_encode($data) : $this->url,
-            'thumbnail_url' => $data ? 'data:' . $this->mime_type . ';base64,' . base64_encode($data) : $this->thumbnailUrl,
+            'url' => null,
+            'thumbnail_url' => null,
             'mime_type' => $this->mime_type,
             'size' => $this->size,
             'file_name' => $this->file_name,
