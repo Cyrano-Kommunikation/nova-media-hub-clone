@@ -61,7 +61,6 @@ class MediaHubController extends Controller
     {
         $files = $request->allFiles()['files'] ?? [];
         $collectionName = $request->get('collectionName') ?? 1;
-
         $exceptions = [];
 
         $uploadedMedia = [];
@@ -69,7 +68,7 @@ class MediaHubController extends Controller
             try {
                 $uploadedMedia[] = MediaHub::fileHandler()
                     ->withFile($file)
-                    ->withCollection($collectionName)
+                    ->withCollection((int)$collectionName)
                     ->save();
             } catch (Exception $e) {
                 $exceptions[] = $e;
