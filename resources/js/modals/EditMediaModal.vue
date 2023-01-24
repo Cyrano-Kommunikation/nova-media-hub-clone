@@ -147,8 +147,7 @@ export default {
           tagsArray.push(tags[i].name);
         }
       }
-      const result = tagsArray.filter(tag => tag.toLowerCase().indexOf(input) > -1);
-      return result;
+      return tagsArray.filter(tag => tag.toLowerCase().indexOf(input) > -1);
     },
     filterRoles() {
       const roles = this.roles;
@@ -181,7 +180,7 @@ export default {
       }
     },
     handleInputChange() {
-      if (this.inputTag.length > 2) {
+      if (this.inputTag.length > 0) {
         this.showTagDropdown = true;
         return;
       }
