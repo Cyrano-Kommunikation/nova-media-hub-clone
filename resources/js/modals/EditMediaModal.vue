@@ -13,20 +13,26 @@
           <input v-model="copyright" type="text" class="form-control form-input form-input-bordered w-full mt-4"
                  placeholder="Copyright">
         </div>
-        <div class="o1-mt-8 relative">
-          <input v-model="inputTag" @input="handleInputChange" type="text"
+        <div class="o1-mt-4 relative">
+          <input v-model="inputTag" @input="handleInputChange" type="text" @focus="showTagDropdown = true"
+                 @blur="closeTagDropdown"
+                 tabindex="0"
                  class="form-control form-input form-input-bordered w-full mt-4"
                  placeholder="Schlagwörter" @keydown.enter="addTag">
           <div v-show="showTagDropdown"
-               class="o1-w-[394px] o1-absolute o1-z-[1000] top[40px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-bg-gray-200 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-scroll"
-               v-if="filterTags.length > 0">
+               class="o1-w-[394px] o1-absolute o1-z-[1000] top[40px] o1-max-h-[150px] dark:o1-bg-gray-900 o1-bg-gray-200 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 shadow o1-overflow-hidden o1-overflow-y-auto">
+            <div class="o1-p-4 o1-border-b o1-border-gray-300 dark:o1-border-gray-700"
+                 v-if="filterTags.length === 0">
+              Es sind keine Schlagworte verfügbar.
+            </div>
             <div class="o1-p-4 cursor-pointer o1-border-b o1-border-gray-300 dark:o1-border-gray-700"
                  @click="addTagFromSelect(tag)" v-for="tag in filterTags" :key="tag">
               {{ tag }}
             </div>
           </div>
           <div
-            class="o1-w-full dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 o1-p-2">
+            class="o1-w-full dark:o1-bg-gray-900 o1-z-10 o1-rounded o1-border-gray-300 o1-border dark:o1-border-gray-700 o1-mt-2 o1-p-2"
+            v-if="selectedTags.length > 0">
             <span
               class="o1-text-xs o1-px-3 o1-py-1 o1-bg-slate-700 o1-bg-slate-300 dark:o1-bg-slate-500 o1-m-1 o1-rounded-xl o1-inline-block"
               v-for="(tag, index) in selectedTags" :key="tag">
@@ -40,7 +46,8 @@
           <div>
             <Button @input="handleInputChange"
                     class="form-control form-input form-input-bordered w-full mt-4"
-                    @click="showRoleDropdown = !showRoleDropdown">
+                    @click="showRoleDropdown = !showRoleDropdown"
+                    @blur="closeRoleDropdown">
               Benutzergruppen auswählen
             </Button>
             <div v-show="showRoleDropdown"
@@ -161,8 +168,17 @@ export default {
       return roleArray;
     }
   },
-
   methods: {
+    closeRoleDropdown() {
+      setTimeout(() => {
+        this.showRoleDropdown = false;
+      }, 250);
+    },
+    closeTagDropdown() {
+      setTimeout(() => {
+        this.showTagDropdown = false;
+      }, 250);
+    },
     addRoleFromSelect(id) {
       if (!this.selectedRoles.includes(id)) {
         this.selectedRoles.push(id);
