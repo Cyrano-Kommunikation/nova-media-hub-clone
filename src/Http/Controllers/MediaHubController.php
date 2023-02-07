@@ -273,6 +273,7 @@ class MediaHubController extends Controller
 
     public function downloadFile($id)
     {
+
         $mediaItem = Media::findOrFail($id);
 
         $path = storage_path() . '/app/media/' . $id . '/' . $mediaItem->file_name;
@@ -282,6 +283,7 @@ class MediaHubController extends Controller
             ], 200);
         }
 
+        ob_end_clean();
 
         return response()->download($path, $mediaItem->file_name, [
             'Content-Type' => $mediaItem->mime_type
