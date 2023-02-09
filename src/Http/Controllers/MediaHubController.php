@@ -285,8 +285,6 @@ class MediaHubController extends Controller
 
         ob_end_clean();
 
-        return response()->download($path, $mediaItem->file_name, [
-            'Content-Type' => $mediaItem->mime_type
-        ]);
+        return response()->download($path, $mediaItem->file_name);
     }
 }
