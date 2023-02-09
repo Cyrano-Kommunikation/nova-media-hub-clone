@@ -50,15 +50,14 @@ export default {
   methods: {
     async downloadItem() {
       const result = await API.downloadFile(this.mediaItem.id);
-      const blob = new Blob([result.data], {
-        type: this.mediaItem.mime_type
-      });
+      const blob = new Blob([result.data]);
 
       const objectURL = window.URL.createObjectURL(blob);
 
       let link = document.createElement('a');
       link.href = objectURL;
-      link.download = this.mediaItem.file_name;
+      link.setAttribute('download', this.mediaItem.file_name);
+      document.body.appendChild(link);
       link.click();
     },
     onOptionClicked(event) {

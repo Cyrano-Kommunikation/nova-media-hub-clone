@@ -2,21 +2,17 @@
 
 namespace Cyrano\MediaHub\Http\Controllers;
 
-use BeyondCode\QueryDetector\Outputs\Log;
-use Cyrano\MediaHub\Models\Collection;
+use Cyrano\MediaHub\MediaHandler\Support\Filesystem;
+use Cyrano\MediaHub\MediaHub;
+use Cyrano\MediaHub\Models\Media;
 use Cyrano\MediaHub\Models\Role;
 use Exception;
-use Illuminate\Support\Arr;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Routing\Controller;
-use Cyrano\MediaHub\MediaHub;
-use Cyrano\MediaHub\MediaHandler\Support\Filesystem;
-use Cyrano\MediaHub\Models\Media;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
 class MediaHubController extends Controller
@@ -273,7 +269,7 @@ class MediaHubController extends Controller
 
     public function downloadFile($id)
     {
-
+        ob_end_clean();
         $mediaItem = Media::findOrFail($id);
 
         $path = storage_path() . '/app/media/' . $id . '/' . $mediaItem->file_name;
@@ -283,8 +279,6 @@ class MediaHubController extends Controller
             ], 200);
         }
 
-        ob_end_clean();
-
-        return response()->download($path, $mediaItem->file_name);
+        return response()->download($path);
     }
 }

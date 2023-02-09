@@ -57,7 +57,7 @@ export default {
 
   async downloadFile(fileId) {
     return Nova.request().post(`${PREFIX}/file/${fileId}/download`, {}, {
-      responseType: 'arrayBuffer'
+      responseType: 'blob'
     });
   }
 };
