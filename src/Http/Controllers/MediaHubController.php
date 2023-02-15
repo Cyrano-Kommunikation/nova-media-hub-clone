@@ -138,10 +138,13 @@ class MediaHubController extends Controller
             if ($key == 'tags') {
                 $arr = [];
                 foreach ($field as $tag) {
-                    $foundTag = MediaHub::getTagModel()::updateOrCreate([
-                        'name' => $tag,
-                        'description' => ''
-                    ]);
+                    $foundTag = MediaHub::getTagModel()::where('name', $tag)->first();
+                    if (!$foundTag) {
+                        MediaHub::getTagModel()::create([
+                            'name' => $tag,
+                            'description' => ''
+                        ]);
+                    }
                     $arr[] = $foundTag->id;
                 }
 
