@@ -203,7 +203,6 @@ export default {
 
   methods: {
     async handleCloseEditMediaModal() {
-      console.log(this.showEditMediaModal);
       this.showEditMediaModal = false;
       await this.getMedia();
       await this.getRoles();
