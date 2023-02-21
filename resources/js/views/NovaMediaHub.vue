@@ -108,7 +108,7 @@
     <CreateCollectionModal :show="showCreateCollectionModal" @close="handleCloseCreateModal"/>
 
     <EditMediaModal :media="ctxMediaItem" :roles="roles" :show="showEditMediaModal" :tags="tags"
-                    @close="handleCloseEditModal"/>
+                    @close="handleCloseEditMediaModal"/>
 
     <EditCollectionModal :collection="collection" :show="showEditCollectionModal"
                          @close="handleCloseEditCollectionModal"/>
@@ -207,10 +207,6 @@ export default {
       await this.getRoles();
       await this.getTags();
       this.showEditMediaModal = false;
-    },
-    async handleCloseEditModal() {
-      await this.refreshData();
-      this.showRenameCollectionModal = false;
     },
     async handleCloseEditCollectionModal() {
       await this.refreshData();
