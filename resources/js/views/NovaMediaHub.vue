@@ -203,22 +203,22 @@ export default {
 
   methods: {
     async handleCloseEditMediaModal() {
+      this.showEditMediaModal = false;
       await this.getMedia();
       await this.getRoles();
       await this.getTags();
-      this.showEditMediaModal = false;
     },
     async handleCloseEditCollectionModal() {
-      await this.refreshData();
       this.showEditCollectionModal = false;
+      await this.refreshData();
     },
     async handleCloseCreateModal() {
-      await this.refreshData();
       this.showCreateCollectionModal = false;
+      await this.refreshData();
     },
     async handleCloseDeleteModal() {
-      await this.refreshData();
       this.showDeleteCollectionModal = false;
+      await this.refreshData();
     },
     async refreshData() {
       this.loading = true;
