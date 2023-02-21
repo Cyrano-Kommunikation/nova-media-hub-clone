@@ -25,8 +25,8 @@ export default {
     return Nova.request().post(`${PREFIX}/media/${mediaId}/data`, formData);
   },
 
-  async renameCollection(oldCollectionName, newCollectionName) {
-    return Nova.request().post(`${PREFIX}/collection/${oldCollectionName}/rename`, {newCollectionName});
+  async updateCollection(oldCollectionName, collectionData) {
+    return Nova.request().post(`${PREFIX}/collection/${oldCollectionName}/update`, {collectionData});
   },
 
   async deleteCollection(collectionId) {
@@ -59,5 +59,8 @@ export default {
     return Nova.request().post(`${PREFIX}/file/${fileId}/download`, {}, {
       responseType: 'blob'
     });
+  },
+  async getCollectionById(id) {
+    return Nova.request().post(`${PREFIX}/collections/${id}/retrieve`, {});
   }
 };

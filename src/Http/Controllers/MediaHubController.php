@@ -2,11 +2,14 @@
 
 namespace Cyrano\MediaHub\Http\Controllers;
 
+use Cyrano\MediaHub\Filters\Collection;
+use Cyrano\MediaHub\Filters\Search;
+use Cyrano\MediaHub\Filters\Sort;
 use Cyrano\MediaHub\MediaHandler\Support\Filesystem;
 use Cyrano\MediaHub\MediaHub;
-use Cyrano\MediaHub\Models\Media;
 use Cyrano\MediaHub\Models\Role;
 use Exception;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -42,9 +45,9 @@ class MediaHubController extends Controller
     {
         $media = app(Pipeline::class)
             ->send(MediaHub::getQuery())->through([
-                \Cyrano\MediaHub\Filters\Collection::class,
-                \Cyrano\MediaHub\Filters\Search::class,
-                \Cyrano\MediaHub\Filters\Sort::class,
+                Collection::class,
+                Search::class,
+                Sort::class,
             ])->thenReturn()->paginate(72);
 
         $newCollection = $media->getCollection()->map->formatForNova();
@@ -182,16 +185,24 @@ class MediaHubController extends Controller
      * @param string $collectionId
      * @return JsonResponse
      */
-    public function rename(Request $request, string $collectionId): JsonResponse
+    public function update(Request $request, string $collectionId): JsonResponse
     {
-        $collectionName = $request->input('newCollectionName');
-        if (!$collectionName) {
-            return response()->json(['error' => 'Der neue Kollektionsname wird benötigt.'], 400);
+        $collectionData = $request->input('collectionData');
+        if (!array_key_exists('name', $collectionData)) {
+            return response()->json(['error' => 'Der Kollektionsname wird benötigt.'], 400);
+        }
+
+        if (!array_key_exists('roles', $collectionData)) {
+            return response()->json(
+                ['error' => 'Irgendetwas ist beim Aktualisieren der Kollektion schiefgelaufen. Bitte aktualisiere die Seite und versuche es erneut.'],
+                400
+            );
         }
 
         $collection = MediaHub::getCollectionModel()::findOrFail($collectionId);
 
-        $collection->name = $collectionName;
+        $collection->name = $collectionData['name'];
+        $collection->roles()->sync($collectionData['roles']);
         $collection->save();
 
         return response()->json('', 200);
@@ -201,7 +212,7 @@ class MediaHubController extends Controller
      * Delete Collection.
      * @param string $collectionId
      * @return JsonResponse
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws BindingResolutionException
      */
     public function deleteCollection(string $collectionId): JsonResponse
     {
@@ -273,7 +284,7 @@ class MediaHubController extends Controller
     public function downloadFile($id)
     {
         ob_end_clean();
-        $mediaItem = Media::findOrFail($id);
+        $mediaItem = MediaHub::getMediaModel()::findOrFail($id);
 
         $path = storage_path() . '/app/media/' . $id . '/' . $mediaItem->file_name;
         if (!File::exists($path)) {
@@ -283,5 +294,12 @@ class MediaHubController extends Controller
         }
 
         return response()->download($path);
+    }
+
+    public function retrieveCollection($id): JsonResponse
+    {
+        $collection = MediaHub::getCollectionModel()::with('roles')->findOrFail($id);
+
+        return response()->json($collection);
     }
 }

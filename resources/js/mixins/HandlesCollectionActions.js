@@ -2,11 +2,11 @@ import API from '../api';
 
 export default {
   methods: {
-    async renameCollection(collectionId, newCollectionName) {
+    async updateCollection(collectionId, collectionData) {
       try {
-        await API.renameCollection(collectionId, newCollectionName);
+        await API.updateCollection(collectionId, collectionData);
 
-        Nova.$toasted.success('Du hast die Kollektion erfolgreich umbenannt');
+        Nova.$toasted.success('Du hast die Kollektion erfolgreich aktualisiert.');
 
         return true;
       } catch (e) {
