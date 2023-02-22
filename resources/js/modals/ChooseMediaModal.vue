@@ -195,7 +195,6 @@ export default {
     );
   },
   async mounted() {
-    await this.getCollections();
     this.$nextTick(() => (this.loading = false));
   },
   watch: {
