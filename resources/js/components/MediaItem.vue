@@ -76,8 +76,10 @@ export default {
   },
 
   async created() {
-    const response = await API.getImage(this.mediaItem.file_name, this.mediaItem.id, this.mediaItem.mime_type);
-    this.image = window.URL.createObjectURL(response.data);
+    if (this.mediaItem.mime_type.includes('image')) {
+      const response = await API.getImage(this.mediaItem.file_name, this.mediaItem.id, this.mediaItem.mime_type);
+      this.image = window.URL.createObjectURL(response.data);
+    }
   }
   ,
 
