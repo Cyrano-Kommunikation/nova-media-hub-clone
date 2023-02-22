@@ -120,7 +120,6 @@ export default {
       if (newValue) {
         const response = await API.getImage(this.mediaItem.file_name, this.mediaItem.id, this.mediaItem.mime_type);
         this.image = window.URL.createObjectURL(response.data);
-        console.log(this.image);
         await this.getCollections();
         this.selectedCollection = this.collections.find(col => col.id === this.collection);
       } else {

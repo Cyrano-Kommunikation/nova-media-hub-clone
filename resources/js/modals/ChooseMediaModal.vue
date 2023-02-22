@@ -190,7 +190,6 @@ export default {
     this.$watch(
       () => ({collection: this.collection, search: this.search, orderBy: this.orderBy}),
       data => {
-        console.log(this.collection);
         this.getMedia({...data, page: 1})
       }
     );
