@@ -37,13 +37,13 @@
         :mediaItem="ctxMediaItem"
       />
 
-<!--      <ChooseMediaModal-->
-<!--        :field="field"-->
-<!--        :initialSelectedMediaItems="value"-->
-<!--        :show="showChooseModal"-->
-<!--        @close="showChooseModal = false"-->
-<!--        @confirm="mediaItemsSelected"-->
-<!--      />-->
+      <ChooseMediaModal
+        :field="field"
+        :initialSelectedMediaItems="value"
+        :show="showChooseModal"
+        @close="showChooseModal = false"
+        @confirm="mediaItemsSelected"
+      />
     </template>
   </DefaultField>
 </template>
