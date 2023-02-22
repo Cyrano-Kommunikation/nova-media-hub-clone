@@ -41,6 +41,7 @@ export default {
   data: () => ({loading: false}),
 
   async mounted() {
+    console.log('MoveToCollectionModal');
     await this.getCollections();
   },
 

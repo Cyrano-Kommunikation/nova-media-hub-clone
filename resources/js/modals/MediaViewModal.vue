@@ -153,6 +153,7 @@ export default {
     },
 
     async getCollections() {
+      console.log('MediaViewModal');
       const {data} = await API.getCollections();
       this.collections = data || [];
 

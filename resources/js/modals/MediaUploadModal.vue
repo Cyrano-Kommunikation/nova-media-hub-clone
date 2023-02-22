@@ -114,6 +114,7 @@ export default {
     },
 
     async getCollections() {
+      console.log('MediaUploadModal');
       const {data} = await API.getCollections();
       this.collections = data || [];
 
